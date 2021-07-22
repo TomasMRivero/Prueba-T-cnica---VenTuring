@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 require('dotenv').config();
 const mysql = require('mysql');
 const util = require('util');
