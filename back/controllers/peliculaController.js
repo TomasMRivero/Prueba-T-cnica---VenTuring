@@ -20,16 +20,27 @@ async function subirLista(file){
     const lista = await service.procesarArchivo(data);
 
     //recorrer el array y verificar si ya estan cargadas las películas
+    let existentes = [];
+    let cargadas = [];
     for (const obj in lista){
-        const existe = await service.verificarPelicula(obj);
+        const existe = await service.verificarPelicula(lista[obj]);
         if (existe) {
             //si la pelicula ya existe
-            console.log("existe");
+            //la carga en una lista para películas existentes
+            existentes.push(lista[obj].titulo);
         }else{
             //si la película no existe
-            console.log("no existe");
+            //la carga en la base de datos y aumenta el contador
+            const resp = await service.cargarPelicula(lista[obj]);
+            if(!resp){
+                throw error;
+            }
+            cargadas.push(lista[obj].titulo);
         }
     }
+    //devuelve un objeto
+    //{existentes: [peliculas existentes], cargadas: [películas cargadas con éxito]}
+    return{existentes, cargadas}
 }
 
 module.exports = {

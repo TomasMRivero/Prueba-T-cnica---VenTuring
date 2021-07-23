@@ -32,12 +32,18 @@ async function procesarArchivo(data){
 //verificar si la película ya existe
 async function verificarPelicula(obj){
     const resp = await model.buscarPelicula(obj.titulo);
-    
+
     //si existe devuelve true, si no, false
-    return (resp.lenght > 0 ? true : false);
+    return (resp.length > 0 ? true : false);
+}
+
+//llamar al model para cargar la película
+async function cargarPelicula(obj){
+    return await model.cargarPelicula(obj);
 }
 
 module.exports = {
     procesarArchivo,
-    verificarPelicula
+    verificarPelicula,
+    cargarPelicula
 }

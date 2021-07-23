@@ -46,8 +46,7 @@ route
             }
             //se subió un archivo del formato correcto
             const resp = await controller.subirLista(req.file)
-            console.log(resp);
-            res.send("ok").status(200)
+            res.send(resp).status(201)
         } catch (error) {
             console.log(error);
             res.send(error).status(400);
