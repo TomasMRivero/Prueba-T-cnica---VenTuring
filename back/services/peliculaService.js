@@ -31,7 +31,7 @@ async function procesarArchivo(data){
 
 //verificar si la película ya existe
 async function verificarPelicula(obj){
-    const resp = await model.buscarPelicula(obj.titulo);
+    const resp = await model.buscarPelicula("titulo", obj.titulo);
 
     //si existe devuelve true, si no, false
     return (resp.length > 0 ? true : false);
@@ -42,8 +42,19 @@ async function cargarPelicula(obj){
     return await model.cargarPelicula(obj);
 }
 
+async function buscarPorId(id){
+    const resp = await model.buscarPelicula("id", id);
+    return resp.length>0?true:false;
+}
+
+async function borrarPelicula(id){
+    await model.borrarPelicula(id);
+}
+
 module.exports = {
     procesarArchivo,
     verificarPelicula,
-    cargarPelicula
+    cargarPelicula,
+    buscarPorId,
+    borrarPelicula
 }

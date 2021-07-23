@@ -6,8 +6,8 @@ const db = connectDatabase();
 const qy = db.query;
 
 //buscar película por título
-async function buscarPelicula(searchParams){
-    return await qy('SELECT * FROM `pelicula` WHERE titulo = ?', [searchParams]);
+async function buscarPelicula(campo, searchParams){
+    return await qy('SELECT * FROM `pelicula` WHERE ?? = ?', [campo, searchParams]);
 }
 
 //cargar pelicula en la bdd
@@ -15,7 +15,14 @@ async function cargarPelicula(setParams){
     return await qy('INSERT INTO `pelicula` SET ?', [setParams])
 }
 
+//borrar pelicula de la bdd
+async function borrarPelicula(id){
+    await qy('DELETE FROM `pelicula` WHERE id = ?', [id]);
+    console.log("borrado con éxito");
+}
+
 module.exports = {
     buscarPelicula,
-    cargarPelicula
+    cargarPelicula,
+    borrarPelicula
 }

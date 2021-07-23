@@ -87,7 +87,16 @@ async function subirPelicula(params){
     }
 }
 
+async function borrarPelicula(id){
+    const existe = await service.buscarPorId(id);
+    if (!existe){
+        throw ("no existe")
+    }
+    await service.borrarPelicula(id);
+}
+
 module.exports = {
     subirLista,
-    subirPelicula
+    subirPelicula,
+    borrarPelicula
 }

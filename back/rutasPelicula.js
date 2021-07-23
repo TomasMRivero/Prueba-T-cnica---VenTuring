@@ -35,7 +35,7 @@ const upload = multer({
 });
 
 route
-//cargar libro desde csv
+//cargar pelicula desde csv
     .post('/', upload.single("lista"), async(req, res) => {
 
         try {
@@ -52,7 +52,7 @@ route
             res.send(error).status(400);
         }
     })
-//cargar libro desde pantalla de alta
+//cargar pelicula desde pantalla de alta
     .post('/alta', async(req, res) => {
 
         try {
@@ -63,6 +63,16 @@ route
             res.send(error).status(400);
         }
 
+    })
+//eliminar pelicula
+    .delete('/:id', async(req, res) => {
+        try {
+            await controller.borrarPelicula(req.params.id);
+            res.status(204).send();
+        } catch (error) {
+            console.log(error);
+            res.send(error).status(400);            
+        }
     })
 
 
