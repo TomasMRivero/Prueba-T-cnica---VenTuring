@@ -18,6 +18,18 @@ async function subirLista(file){
 
     //obtiene un array de objetos {titulo, descripcion, anio}
     const lista = await service.procesarArchivo(data);
+
+    //recorrer el array y verificar si ya estan cargadas las películas
+    for (const obj in lista){
+        const existe = await service.verificarPelicula(obj);
+        if (existe) {
+            //si la pelicula ya existe
+            console.log("existe");
+        }else{
+            //si la película no existe
+            console.log("no existe");
+        }
+    }
 }
 
 module.exports = {

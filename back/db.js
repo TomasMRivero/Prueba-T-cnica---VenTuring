@@ -18,7 +18,7 @@ var db;
 //Conexion con la base de datos
 function connectDatabase(){
     if(!db){
-        db = mysql.createConnection(settings);
+        db = mysql.createConnection(config);
         db.connect((err) => {
             if(!err){
                 console.log('Conexion con la base de datos establecida.');
