@@ -3,7 +3,6 @@ const express = require('express');
 const route = express.Router();
 const multer = require('multer');
 const path = require('path');
-const { send } = require('process');
 
 //importar controlador
 const controller = require('./controllers/peliculaController.js');
@@ -46,7 +45,8 @@ route
                 throw ("no se subió archivo");
             }
             //se subió un archivo del formato correcto
-            console.log(req.file);
+            const resp = await controller.subirLista(req.file)
+            console.log(resp);
             res.send("ok").status(200)
         } catch (error) {
             console.log(error);
