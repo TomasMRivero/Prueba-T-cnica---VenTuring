@@ -52,7 +52,7 @@ route
             res.send(error).status(400);
         }
     })
-//carar libro desde pantalla de alta
+//cargar libro desde pantalla de alta
     .post('/alta', async(req, res) => {
 
         try {

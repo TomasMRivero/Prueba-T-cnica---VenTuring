@@ -64,7 +64,27 @@ async function subirPelicula(params){
         //si el formato es incorrecto devuelve error
         throw("formato incorrecto")
     }
-    console.log("ok")
+    
+    //hacer trim a los parámetros y guardarlos en un nuevo objeto
+    const setParams={
+        titulo: titulo.trim(),
+        descripcion: descripcion.trim(),
+        anio: Number(anio)
+    };
+
+    //verificar si existe la película
+    const existe = await service.verificarPelicula(setParams);
+    if(existe){
+        //si existe arroja error
+        throw "ya existe esa película"
+    }
+    //si no existe la carga a la bdd
+    const resp = await service.cargarPelicula(setParams);
+    //devuelve un objeto con la película guardada
+    return {
+        id: resp.insertId,
+        ...setParams
+    }
 }
 
 module.exports = {
