@@ -32,10 +32,10 @@ async function subirLista(file){
             //si la película no existe
             //la carga en la base de datos y aumenta el contador
             const resp = await service.cargarPelicula(lista[obj]);
-            if(!resp){
-                throw error;
-            }
-            cargadas.push(lista[obj].titulo);
+            cargadas.push({
+                id: resp.insertId,
+                ...lista[obj]
+            });
         }
     }
     //devuelve un objeto
