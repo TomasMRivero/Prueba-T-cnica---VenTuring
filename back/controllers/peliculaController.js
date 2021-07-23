@@ -43,6 +43,31 @@ async function subirLista(file){
     return{existentes, cargadas}
 }
 
+async function subirPelicula(params){
+    const{
+        titulo,
+        descripcion,
+        anio
+    } = params;
+
+    //verificar que los parámetros no estén vacíos
+    if (!titulo || !titulo.trim() ||
+        !descripcion || !descripcion.trim() ||
+        !anio || !anio.trim()
+    ){
+        //si están vacíos devuelve error
+        throw("faltan datos")
+    }else if(
+        //verifica que en año se ingrese un número entero
+        !Number.isInteger(Number(anio))
+    ){
+        //si el formato es incorrecto devuelve error
+        throw("formato incorrecto")
+    }
+    console.log("ok")
+}
+
 module.exports = {
-    subirLista
+    subirLista,
+    subirPelicula
 }

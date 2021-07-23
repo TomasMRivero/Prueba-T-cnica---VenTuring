@@ -45,12 +45,24 @@ route
                 throw ("no se subió archivo");
             }
             //se subió un archivo del formato correcto
-            const resp = await controller.subirLista(req.file)
-            res.send(resp).status(201)
+            const resp = await controller.subirLista(req.file);
+            res.send(resp).status(201);
         } catch (error) {
             console.log(error);
             res.send(error).status(400);
         }
+    })
+//carar libro desde pantalla de alta
+    .post('/alta', async(req, res) => {
+
+        try {
+            const resp = await controller.subirPelicula(req.body);
+            res.send(resp).status(201);
+        } catch (error) {
+            console.log(error);
+            res.send(error).status(400);
+        }
+
     })
 
 
