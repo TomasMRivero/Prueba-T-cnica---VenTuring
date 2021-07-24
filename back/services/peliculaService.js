@@ -56,7 +56,11 @@ async function borrarPelicula(id){
 }
 
 async function editarPelicula(id, setParams){
-    return await model.editarPelicula(id, setParams)
+    return await model.editarPelicula(id, setParams);
+}
+
+async function obtenerLista(pagina){
+    return await model.obtenerLista(pagina);
 }
 
 module.exports = {
@@ -65,5 +69,6 @@ module.exports = {
     cargarPelicula,
     buscarPorId,
     borrarPelicula,
-    editarPelicula
+    editarPelicula,
+    obtenerLista
 }

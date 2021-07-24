@@ -12,7 +12,7 @@ async function buscarPelicula(campo, searchParams){
 
 //cargar pelicula en la bdd
 async function cargarPelicula(setParams){
-    return await qy('INSERT INTO `pelicula` SET ?', [setParams])
+    return await qy('INSERT INTO `pelicula` SET ?', [setParams]);
 }
 
 //borrar pelicula de la bdd
@@ -23,12 +23,17 @@ async function borrarPelicula(id){
 
 //editar registro en la bdd
 async function editarPelicula(id, setParams){
-    return await qy('UPDATE `pelicula` SET ? WHERE ?', [setParams, id])
+    return await qy('UPDATE `pelicula` SET ? WHERE ?', [setParams, id]);
+}
+
+async function obtenerLista(pagina){
+    return await qy('SELECT * FROM `pelicula` LIMIT ? OFFSET ?', [pagina.limit, pagina.offset]);
 }
 
 module.exports = {
     buscarPelicula,
     cargarPelicula,
     borrarPelicula,
-    editarPelicula
+    editarPelicula,
+    obtenerLista
 }

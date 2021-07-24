@@ -134,9 +134,15 @@ async function editarPelicula(reqParams){
     
 }
 
+//obtener lista de peliculas
+async function obtenerLista(pagina){
+    return await service.obtenerLista(pagina);
+}
+
 module.exports = {
     subirLista,
     subirPelicula,
     borrarPelicula,
-    editarPelicula
+    editarPelicula,
+    obtenerLista
 }

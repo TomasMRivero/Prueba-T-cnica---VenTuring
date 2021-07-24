@@ -88,7 +88,24 @@ route
             res.send(error).status(400);             
         }
     })
-
+//obener lista de peliculas con paginacion
+//FORMATO: api/peliculas?limit=20&pagina=1
+    .get('', async(req,res) => {
+        try {
+            //calcular el offset según los elementos por página y la página
+            const offset = req.query.limit * (req.query.pagina - 1);
+            const pagina={
+                limit: Number(req.query.limit),
+                offset
+            }
+            //enviar limite y offset y retornar lista de películas
+            const resp = await controller.obtenerLista(pagina);
+            res.send(resp).status(200)            
+        } catch (error) {
+            console.log(error);
+            res.send(error).status(400);            
+        }
+    })
 
 
 module.exports = route;
