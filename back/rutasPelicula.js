@@ -89,7 +89,7 @@ route
         }
     })
 //obener lista de peliculas con paginacion
-//FORMATO: api/peliculas?limit=20&pagina=1
+//FORMATO: api/pelicula?limit=20&pagina=1
     .get('', async(req,res) => {
         try {
             //calcular el offset según los elementos por página y la página
@@ -100,10 +100,22 @@ route
             }
             //enviar limite y offset y retornar lista de películas
             const resp = await controller.obtenerLista(pagina);
-            res.send(resp).status(200)            
+            res.send(resp).status(200);         
         } catch (error) {
             console.log(error);
             res.send(error).status(400);            
+        }
+    })
+//buscar película por título
+//FORMATO: api/pelicula/buscar?titulo=<titulo>
+    .get('/buscar', async(req, res) =>{
+        try {
+            const resp = await controller.buscarPelicula(req.query.titulo);
+            console.log(resp)
+            res.send(resp).status(200);         
+        } catch (error) {
+            console.log(error);
+            res.send(error).status(400);
         }
     })
 

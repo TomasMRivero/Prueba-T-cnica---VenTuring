@@ -6,8 +6,9 @@ const db = connectDatabase();
 const qy = db.query;
 
 //buscar película por título
-async function buscarPelicula(campo, searchParams){
-    return await qy('SELECT * FROM `pelicula` WHERE ?? = ?', [campo, searchParams]);
+async function buscarPelicula(searchParams){
+    console.log(searchParams);
+    return await qy('SELECT * FROM `pelicula` WHERE ?', [searchParams]);
 }
 
 //cargar pelicula en la bdd

@@ -139,10 +139,20 @@ async function obtenerLista(pagina){
     return await service.obtenerLista(pagina);
 }
 
+//buscar pelicula por titulo
+async function buscarPelicula(titulo){
+    //verificar que los datos se ingresen de manera correcta
+    if(!titulo || !titulo.trim()){
+        throw ("faltan datos");
+    }
+    return await service.buscarPorTitulo(titulo.trim());
+}
+
 module.exports = {
     subirLista,
     subirPelicula,
     borrarPelicula,
     editarPelicula,
-    obtenerLista
+    obtenerLista,
+    buscarPelicula
 }
