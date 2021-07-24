@@ -136,6 +136,11 @@ async function editarPelicula(reqParams){
 
 //obtener lista de peliculas
 async function obtenerLista(pagina){
+    if(
+        !Number.isInteger(pagina.limit) ||
+        pagina.limit <= 0 ||
+        pagina.offset < 0
+    ){throw ("formato incorrecto")}
     return await service.obtenerLista(pagina);
 }
 

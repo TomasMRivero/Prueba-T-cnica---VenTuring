@@ -92,6 +92,10 @@ route
 //FORMATO: api/pelicula?limit=20&pagina=1
     .get('', async(req,res) => {
         try {
+            //verificar que el numero de la página esté en el formato correcto
+            if(!Number.isInteger(Number(req.query.pagina))){
+                throw ("formato incorrecto");
+            };
             //calcular el offset según los elementos por página y la página
             const offset = req.query.limit * (req.query.pagina - 1);
             const pagina={
