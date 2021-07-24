@@ -42,7 +42,8 @@ async function subirLista(file){
     //{existentes: [peliculas existentes], cargadas: [películas cargadas con éxito]}
     return{existentes, cargadas}
 }
-
+//obtener la información desde el body, verificar que los datos
+//estén en el formato correcto y cargar la película en la base de datos
 async function subirPelicula(params){
     const{
         titulo,
@@ -86,17 +87,37 @@ async function subirPelicula(params){
         ...setParams
     }
 }
-
+//tomar la id de la ruta y eliminar al libro correspondiente
 async function borrarPelicula(id){
-    const existe = await service.buscarPorId(id);
-    if (!existe){
-        throw ("no existe")
-    }
+    //verificar que exista la película con esa id
+    await service.buscarPorId(id);
     await service.borrarPelicula(id);
+}
+
+//tomar la id de la ruta y los datos del body, verificar que estén en el
+//formato correcto y actualizar la película en la base de datos
+async function editarPelicula(reqParams){
+    //verificar si existe la pelicula con esa id.
+    //si existe, la guarda en una variable para tomar
+    //los valores originales en caso de ser necesario
+    const buscar = await service.buscarPorId(reqParams.id);
+
+    //verificar que el formato del año sea correcto
+    if (!Number.isInteger(Number(reqParams.anio))){
+        throw ("formato invalido")
+    }
+    //verificar si se ingresaron datos para modificar y, si no se ingresaron,
+    //tomar los valores originales
+    const titulo = ((!reqParams.titulo || !reqParams.titulo.trim())?buscar.titulo:reqParams.titulo.trim());
+    const descripcion = ((!reqParams.descripcion || !reqParams.descripcion.trim())?buscar.descripcion:reqParams.descripcion.trim());
+    const anio = ((!reqParams.anio || !reqParams.anio.trim())?buscar.anio:Number(reqParams.anio));
+
+    console.log({titulo, descripcion, anio})
 }
 
 module.exports = {
     subirLista,
     subirPelicula,
-    borrarPelicula
+    borrarPelicula,
+    editarPelicula
 }

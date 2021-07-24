@@ -74,6 +74,20 @@ route
             res.send(error).status(400);            
         }
     })
+//editar pelicula
+    .put('/:id', async(req, res) => {
+        try {
+            const request={
+                id: req.params.id,
+                ...req.body
+            };
+            const resp = await controller.editarPelicula(request);
+            res.send(resp).status(200)
+        } catch (error) {
+            console.log(error);
+            res.send(error).status(400);             
+        }
+    })
 
 
 

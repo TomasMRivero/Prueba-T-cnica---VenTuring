@@ -44,7 +44,11 @@ async function cargarPelicula(obj){
 
 async function buscarPorId(id){
     const resp = await model.buscarPelicula("id", id);
-    return resp.length>0?true:false;
+    if (resp.length==0){
+        //si no existe devuelve error
+        throw ("no existe")
+    }
+    return resp[0]
 }
 
 async function borrarPelicula(id){
