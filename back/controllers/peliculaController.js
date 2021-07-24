@@ -97,22 +97,41 @@ async function borrarPelicula(id){
 //tomar la id de la ruta y los datos del body, verificar que estén en el
 //formato correcto y actualizar la película en la base de datos
 async function editarPelicula(reqParams){
+    const id = reqParams.id
     //verificar si existe la pelicula con esa id.
     //si existe, la guarda en una variable para tomar
     //los valores originales en caso de ser necesario
-    const buscar = await service.buscarPorId(reqParams.id);
+    const buscar = await service.buscarPorId(id);
 
     //verificar que el formato del año sea correcto
     if (!Number.isInteger(Number(reqParams.anio))){
         throw ("formato invalido")
     }
+    //verificar que, de ingresarse un título, no esté en uso
+    if (reqParams.titulo && reqParams.titulo.trim()){
+        const existe = await service.verificarPelicula(reqParams);
+        if(existe && reqParams.titulo != buscar.titulo){
+            throw ("ya existe")
+        }
+    }
+
     //verificar si se ingresaron datos para modificar y, si no se ingresaron,
     //tomar los valores originales
-    const titulo = ((!reqParams.titulo || !reqParams.titulo.trim())?buscar.titulo:reqParams.titulo.trim());
-    const descripcion = ((!reqParams.descripcion || !reqParams.descripcion.trim())?buscar.descripcion:reqParams.descripcion.trim());
-    const anio = ((!reqParams.anio || !reqParams.anio.trim())?buscar.anio:Number(reqParams.anio));
+    //guardar los datos en un objeto setParams
+    const setParams = {}
+    setParams.titulo = ((!reqParams.titulo || !reqParams.titulo.trim())?buscar.titulo:reqParams.titulo.trim());
+    setParams.descripcion = ((!reqParams.descripcion || !reqParams.descripcion.trim())?buscar.descripcion:reqParams.descripcion.trim());
+    setParams.anio = ((!reqParams.anio || !reqParams.anio.trim())?buscar.anio:Number(reqParams.anio));
 
-    console.log({titulo, descripcion, anio})
+    //mandar argumentos para editar
+    const resp = await service.editarPelicula({id}, setParams)
+
+    //verificar cambios y devolver valores nuevos
+    if(resp.changedRows === 0){
+        return
+    }
+    return {id, ...setParams}
+    
 }
 
 module.exports = {

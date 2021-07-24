@@ -21,8 +21,14 @@ async function borrarPelicula(id){
     console.log("borrado con éxito");
 }
 
+//editar registro en la bdd
+async function editarPelicula(id, setParams){
+    return await qy('UPDATE `pelicula` SET ? WHERE ?', [setParams, id])
+}
+
 module.exports = {
     buscarPelicula,
     cargarPelicula,
-    borrarPelicula
+    borrarPelicula,
+    editarPelicula
 }
