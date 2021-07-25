@@ -21,6 +21,25 @@ async function verificarUsuario(user){
     }
 }
 
+async function autenticar(params){
+    const {
+        alias,
+        pass
+    } = params;
+    const resp = await model.buscarUsuario({alias: alias.trim()});
+    if (resp.length === 0){
+        throw ("no existe");
+    }
+    const usuario = resp[0];
+    if(!bcrypt.compareSync(pass, usuario.pass)){
+        throw ("contraseña incorrecta");
+    };
+    return {
+        id: usuario.id,
+        alias: usuario.alias
+    };
+}
+
 //registra usuario
 async function registrarUsuario(setParams){
     return await model.registrarUsuario(setParams);
@@ -28,5 +47,6 @@ async function registrarUsuario(setParams){
 
 module.exports = {
     verificarUsuario,
-    registrarUsuario
+    registrarUsuario,
+    autenticar
 }

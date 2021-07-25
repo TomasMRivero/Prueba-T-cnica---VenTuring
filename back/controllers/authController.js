@@ -35,6 +35,17 @@ async function registrarUsuario(params){
 
 }
 
+async function loguearUsuario(params){
+    if(!params.alias || !params.alias.trim() || !params.pass){
+        throw ('faltan datos')
+    };
+    const usuario = await service.autenticar(params);
+    console.log(usuario)
+
+
+}
+
 module.exports = {
-    registrarUsuario
+    registrarUsuario,
+    loguearUsuario
 }

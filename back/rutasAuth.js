@@ -16,5 +16,14 @@ route
             res.send(error).status(400);            
         }
     })
+    .post('/login', async(req, res) => {
+        try {
+            const token = await controller.loguearUsuario(req.body);
+            res.send({token}).status(200);
+        } catch (error) {
+            console.log(error);
+            res.send(error).status(400);            
+        }
+    })
 
 module.exports = route
