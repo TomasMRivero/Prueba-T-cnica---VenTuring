@@ -40,9 +40,10 @@ async function loguearUsuario(params){
         throw ('faltan datos')
     };
     const usuario = await service.autenticar(params);
-    console.log(usuario)
+    
+    const token = await service.generarToken(usuario);
 
-
+    return token;
 }
 
 module.exports = {

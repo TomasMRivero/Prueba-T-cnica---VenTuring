@@ -1,6 +1,8 @@
 'use script';
 
+require('dotenv').config();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const model = require('../models/authModel.js');
 
@@ -40,6 +42,17 @@ async function autenticar(params){
     };
 }
 
+async function generarToken(usuario){
+    const tokenData = {
+        id: usuario.id,
+        alias: usuario.alias
+    };
+    const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {
+        expiresIn: 60 * 60 * 24 // 24 hs
+    });
+    return token;
+}
+
 //registra usuario
 async function registrarUsuario(setParams){
     return await model.registrarUsuario(setParams);
@@ -48,5 +61,6 @@ async function registrarUsuario(setParams){
 module.exports = {
     verificarUsuario,
     registrarUsuario,
-    autenticar
+    autenticar,
+    generarToken
 }
