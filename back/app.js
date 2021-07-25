@@ -28,6 +28,12 @@ const auth = async(req, res, next) => {
 
         token = token.replace('Bearer ', '');
 
+        //buscar token en la lista negra
+        const resp = await buscarToken({token});
+        if (resp.length>0) {
+            throw ("token inválido")
+        }
+
         //verifica que el token sea válido
         jwt.verify(token, process.env.TOKEN_SECRET, (err, usuario) => {
             if (err) {

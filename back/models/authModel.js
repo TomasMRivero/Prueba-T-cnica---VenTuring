@@ -17,11 +17,17 @@ async function registrarUsuario(setParams){
 
 //cargar el token a una blacklist
 async function blacklistToken(params){
-    return await qy('INSERT INTO `token_blacklist` SET ?', [params])
+    return await qy('INSERT INTO `token_blacklist` SET ?', [params]);
+}
+
+//busca token en la blacklist
+async function buscarToken(token){
+    return await qy('SELECT * FROM `token_blacklist` WHERE ?', [token]);
 }
 
 module.exports = {
     buscarUsuario,
     registrarUsuario,
-    blacklistToken
+    blacklistToken,
+    buscarToken
 }

@@ -71,10 +71,15 @@ async function desloguearUsuario(params){
     return ("Sesion cerrada con éxito");
 }
 
+async function buscarToken(token){
+    return await model.buscarToken(token);
+}
+
 module.exports = {
     verificarUsuario,
     registrarUsuario,
     autenticar,
     generarToken,
-    desloguearUsuario
+    desloguearUsuario,
+    buscarToken
 }
