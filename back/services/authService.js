@@ -28,14 +28,20 @@ async function autenticar(params){
         alias,
         pass
     } = params;
+
+    //busca al usuario
     const resp = await model.buscarUsuario({alias: alias.trim()});
     if (resp.length === 0){
         throw ("no existe");
     }
     const usuario = resp[0];
+
+    //verifica que la contraseña sea correcta
     if(!bcrypt.compareSync(pass, usuario.pass)){
         throw ("contraseña incorrecta");
     };
+
+    //devuelve id y alias
     return {
         id: usuario.id,
         alias: usuario.alias
@@ -43,12 +49,13 @@ async function autenticar(params){
 }
 
 async function generarToken(usuario){
+    //datos que va a tener el token
     const tokenData = {
         id: usuario.id,
         alias: usuario.alias
     };
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET, {
-        expiresIn: 60 * 60 * 24 // 24 hs
+        expiresIn: 60 * 60 * 24 // expira en 24 hs
     });
     return token;
 }

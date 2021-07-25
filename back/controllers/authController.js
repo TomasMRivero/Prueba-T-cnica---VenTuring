@@ -35,12 +35,18 @@ async function registrarUsuario(params){
 
 }
 
+//login de usuario
 async function loguearUsuario(params){
+    
+    //verificar que se ingresen los datos
     if(!params.alias || !params.alias.trim() || !params.pass){
         throw ('faltan datos')
     };
+
+    //verificar que la contraseña coincida
     const usuario = await service.autenticar(params);
     
+    //generar token
     const token = await service.generarToken(usuario);
 
     return token;
