@@ -12,11 +12,10 @@ const readFile = util.promisify(fs.readFile);
 async function subirLista(file){
 
    
-    //abrir el csv a partir de su ubicación y
-    //guardar su información en una variable
+    //abrir el csv
     const data = await readFile(file.path)
 
-    //obtiene un array de objetos {titulo, descripcion, anio}
+    //obtener un array de objetos {titulo, descripcion, anio}
     const lista = await service.procesarArchivo(data);
 
     //recorrer el array y verificar si ya estan cargadas las películas
@@ -42,6 +41,7 @@ async function subirLista(file){
     //{existentes: [peliculas existentes], cargadas: [películas cargadas con éxito]}
     return{existentes, cargadas}
 }
+
 //obtener la información desde el body, verificar que los datos
 //estén en el formato correcto y cargar la película en la base de datos
 async function subirPelicula(params){

@@ -27,6 +27,8 @@ async function editarPelicula(id, setParams){
     return await qy('UPDATE `pelicula` SET ? WHERE ?', [setParams, id]);
 }
 
+//pasa limit y offset como parámetros devuelve lista de elementos
+//correspondientes a esa pagina
 async function obtenerLista(pagina){
     return await qy('SELECT * FROM `pelicula` LIMIT ? OFFSET ?', [pagina.limit, pagina.offset]);
 }

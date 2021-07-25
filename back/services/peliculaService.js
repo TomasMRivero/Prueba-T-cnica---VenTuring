@@ -1,8 +1,7 @@
 'use strict';
 const model = require('../models/peliculaModel.js');
 
-// procesar el archivo, obtener todos los valores y
-// generar un array de objetos
+// procesar el archivo y generar un array de objetos
 async function procesarArchivo(data){
     var lista = [];
     const buffer = data.toString();
@@ -26,6 +25,7 @@ async function procesarArchivo(data){
             lista.push(obj);
         }
     
+    //devolver array de objetos
     return(lista);
 }
 
@@ -43,6 +43,7 @@ async function cargarPelicula(obj){
     return await model.cargarPelicula(obj);
 }
 
+//verifica que exista la pelicula con esa id
 async function buscarPorId(id){
     const resp = await model.buscarPelicula({id});
     if (resp.length==0){
@@ -52,19 +53,24 @@ async function buscarPorId(id){
     return resp[0];
 }
 
+//busca pelicula por titulo, devuelve pelicula
 async function buscarPorTitulo(titulo){
     const resp = await model.buscarPelicula({titulo});
     return resp.length==0?null:resp[0];
 }
 
+//borra la pelicula con la id dada
 async function borrarPelicula(id){
     await model.borrarPelicula(id);
 }
 
+//edita la pelicula con la id dada
 async function editarPelicula(id, setParams){
     return await model.editarPelicula(id, setParams);
 }
 
+//manda el limit y el offset como argumentos y devuelve los elementos
+//correspondientes a esa pagina
 async function obtenerLista(pagina){
     return await model.obtenerLista(pagina);
 }

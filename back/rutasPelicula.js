@@ -121,7 +121,7 @@ route
             console.log(error);
             res.send(error).status(400);
         }
-    })
+    });
 
 
 module.exports = route;
