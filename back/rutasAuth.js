@@ -16,6 +16,7 @@ route
             res.send(error).status(400);            
         }
     })
+//iniciar sesion
     .post('/login', async(req, res) => {
         try {
             const token = await controller.loguearUsuario(req.body);
@@ -25,9 +26,12 @@ route
             res.send(error).status(400);            
         }
     })
+//cerrar sesion
     .post('/logout', async(req, res) => {
         try {
-            console.log(req.usuario);
+            //manda el token y la fecha de expiración como argumento
+            //para guardarlos en una lista negra en la bdd.
+            //De esta forma, si el usuario se desloguea, no se podrá utilizar ese token.
             const token = req.headers.authorization;
             const expDate = new Date(req.usuario.exp  * 1000)
             const resp = await controller.desloguearUsuario({token, expDate})

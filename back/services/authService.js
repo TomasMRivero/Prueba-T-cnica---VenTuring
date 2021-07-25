@@ -71,6 +71,7 @@ async function desloguearUsuario(params){
     return ("Sesion cerrada con éxito");
 }
 
+//busca el token en la blacklist
 async function buscarToken(token){
     return await model.buscarToken(token);
 }
