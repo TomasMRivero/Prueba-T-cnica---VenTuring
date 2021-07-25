@@ -65,9 +65,16 @@ async function registrarUsuario(setParams){
     return await model.registrarUsuario(setParams);
 }
 
+//desloguear usuario
+async function desloguearUsuario(params){
+    await model.blacklistToken(params);
+    return ("Sesion cerrada con éxito");
+}
+
 module.exports = {
     verificarUsuario,
     registrarUsuario,
     autenticar,
-    generarToken
+    generarToken,
+    desloguearUsuario
 }

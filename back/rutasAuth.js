@@ -25,5 +25,17 @@ route
             res.send(error).status(400);            
         }
     })
+    .post('/logout', async(req, res) => {
+        try {
+            console.log(req.usuario);
+            const token = req.headers.authorization;
+            const expDate = new Date(req.usuario.exp  * 1000)
+            const resp = await controller.desloguearUsuario({token, expDate})
+            res.send(resp).status(200);            
+        } catch (error) {
+            console.log(error);
+            res.send(error).status(400);            
+        }
+    })
 
 module.exports = route

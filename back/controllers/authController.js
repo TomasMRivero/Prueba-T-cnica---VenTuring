@@ -52,7 +52,13 @@ async function loguearUsuario(params){
     return token;
 }
 
+//logout de usuario
+async function desloguearUsuario(params){
+    return await service.desloguearUsuario(params);
+}
+
 module.exports = {
     registrarUsuario,
-    loguearUsuario
+    loguearUsuario,
+    desloguearUsuario
 }
