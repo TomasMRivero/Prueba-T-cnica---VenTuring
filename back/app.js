@@ -4,6 +4,7 @@ const express = require('express');
 
 //rutas
 const rutasPelicula = require('./rutasPelicula');
+const rutasAuth = require('./rutasAuth')
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 
 app.use('/api/pelicula', rutasPelicula);
+app.use('/api/auth', rutasAuth);
 
 //Directorio donde se van a guardar los .csv
 const publicDir = require('path').join(__dirname,'/public'); 
