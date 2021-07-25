@@ -36,7 +36,7 @@ const upload = multer({
 
 route
 //cargar pelicula desde csv
-    .post('/', upload.single("lista"), async(req, res) => {
+    .post('/alta/csv', upload.single("lista"), async(req, res) => {
 
         try {
             //verificar que se cargó un archivo
