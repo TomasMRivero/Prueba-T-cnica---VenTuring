@@ -1,6 +1,7 @@
 'use strict';
 const fs = require('fs');
 const util = require('util');
+const { FaltanDatos, FormatoIncorrecto, YaExiste } = require('../errorHandlers.js');
 
 const service = require('../services/peliculaService.js');
 
@@ -57,13 +58,13 @@ async function subirPelicula(params){
         !anio || !anio.trim()
     ){
         //si están vacíos devuelve error
-        throw("faltan datos")
+        throw FaltanDatos;
     }else if(
         //verifica que en año se ingrese un número entero
         !Number.isInteger(Number(anio))
     ){
         //si el formato es incorrecto devuelve error
-        throw("formato incorrecto")
+        throw FormatoIncorrecto;
     }
     
     //hacer trim a los parámetros y guardarlos en un nuevo objeto
@@ -77,7 +78,8 @@ async function subirPelicula(params){
     const existe = await service.verificarPelicula(setParams);
     if(existe){
         //si existe arroja error
-        throw "ya existe esa película"
+        const mensaje = YaExiste.mensaje.concat(' la película');
+        throw {...YaExiste, mensaje};
     }
     //si no existe la carga a la bdd
     const resp = await service.cargarPelicula(setParams);
@@ -105,13 +107,14 @@ async function editarPelicula(reqParams){
 
     //verificar que el formato del año sea correcto
     if (!Number.isInteger(Number(reqParams.anio))){
-        throw ("formato invalido")
+        throw FormatoIncorrecto;
     }
     //verificar que, de ingresarse un título, no esté en uso
     if (reqParams.titulo && reqParams.titulo.trim()){
         const existe = await service.verificarPelicula(reqParams);
         if(existe && reqParams.titulo != buscar.titulo){
-            throw ("ya existe")
+            const mensaje = YaExiste.mensaje.concat(' la película');
+            throw {...YaExiste, mensaje};
         }
     }
 
@@ -140,7 +143,7 @@ async function obtenerLista(pagina){
         !Number.isInteger(pagina.limit) ||
         pagina.limit <= 0 ||
         pagina.offset < 0
-    ){throw ("formato incorrecto")}
+    ){ throw FormatoIncorrecto; }
     return await service.obtenerLista(pagina);
 }
 
@@ -148,7 +151,7 @@ async function obtenerLista(pagina){
 async function buscarPelicula(titulo){
     //verificar que los datos se ingresen de manera correcta
     if(!titulo || !titulo.trim()){
-        throw ("faltan datos");
+        throw FaltanDatos;
     }
     return await service.buscarPorTitulo(titulo.trim());
 }

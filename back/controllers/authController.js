@@ -1,5 +1,6 @@
 'use strict';
 
+const { FaltanDatos, FormatoIncorrecto } = require('../errorHandlers.js');
 const service = require('../services/authService.js');
 
 //registrar usuario nuevo
@@ -14,14 +15,14 @@ async function registrarUsuario(params){
         !alias || !alias.trim() || 
         !pass || ! pass.trim()
     ){
-        throw ("faltan datos")
+        throw FaltanDatos;
     }
     //verificar que el formato del alias
     if (
         alias.trim().length > 30 ||
         alias.trim().indexOf(" ") != -1
     ){
-        throw ("formato incorrecto")
+        throw FormatoIncorrecto;
     }
     //verificar que el usuario no esté registrado
     const setParams = await service.verificarUsuario(params);
@@ -40,7 +41,7 @@ async function loguearUsuario(params){
     
     //verificar que se ingresen los datos
     if(!params.alias || !params.alias.trim() || !params.pass){
-        throw ('faltan datos')
+        throw FormatoIncorrecto;
     };
 
     //verificar que la contraseña coincida

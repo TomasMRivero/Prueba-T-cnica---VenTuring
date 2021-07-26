@@ -3,6 +3,7 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { YaExiste, NoExiste, PassIncorrecta, UsuarioNoValido } = require('../errorHandlers.js');
 
 const model = require('../models/authModel.js');
 
@@ -12,7 +13,8 @@ async function verificarUsuario(user){
     //verificación
     const resp = await model.buscarUsuario({alias: user.alias.trim()});
     if (resp.length > 0){
-        throw ("ya existe");
+        const mensaje = YaExiste.mensaje.concat(' el usuario');
+        throw {YaExiste, mensaje};
     }
     //encriptar clave
     const passEncriptada = await bcrypt.hash(user.pass, 10);
@@ -32,13 +34,13 @@ async function autenticar(params){
     //busca al usuario
     const resp = await model.buscarUsuario({alias: alias.trim()});
     if (resp.length === 0){
-        throw ("no existe");
+        throw UsuarioNoValido;
     }
     const usuario = resp[0];
 
     //verifica que la contraseña sea correcta
     if(!bcrypt.compareSync(pass, usuario.pass)){
-        throw ("contraseña incorrecta");
+        throw PassIncorrecta;
     };
 
     //devuelve id y alias

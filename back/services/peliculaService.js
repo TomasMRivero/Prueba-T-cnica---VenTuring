@@ -1,4 +1,5 @@
 'use strict';
+const { ArchivoVacio, NoExiste } = require('../errorHandlers.js');
 const model = require('../models/peliculaModel.js');
 
 // procesar el archivo y generar un array de objetos
@@ -8,7 +9,7 @@ async function procesarArchivo(data){
     
         //verificar que el archivo no esté vacío
         if (!buffer.trim()){
-            throw {mensaje: "está vacío"};
+            throw ArchivoVacio;
         }
     
         //hacer un array donde cada elemento sea una línea del csv
@@ -48,7 +49,8 @@ async function buscarPorId(id){
     const resp = await model.buscarPelicula({id});
     if (resp.length==0){
         //si no existe devuelve error
-        throw ("no existe")
+        const mensaje = NoExiste.mensaje.concat(" la película")
+        throw {NoExiste, mensaje};
     }
     return resp[0];
 }

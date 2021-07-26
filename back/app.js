@@ -8,7 +8,8 @@ const jwt = require('jsonwebtoken');
 const rutasPelicula = require('./rutasPelicula');
 const rutasAuth = require('./rutasAuth')
 
-const {buscarToken} = require('./services/authService')
+const {buscarToken} = require('./services/authService');
+const { TokenInvalido, NoLogueado, devolverError } = require('./errorHandlers');
 
 const app = express();
 
@@ -23,7 +24,7 @@ const auth = async(req, res, next) => {
         //verifica que el usuario este logueado
         let token = req.headers['authorization'];
         if(!token){
-            throw("no estas logueado");
+            throw NoLogueado;
         }
 
         token = token.replace('Bearer ', '');
@@ -31,13 +32,13 @@ const auth = async(req, res, next) => {
         //buscar token en la lista negra
         const resp = await buscarToken({token});
         if (resp.length>0) {
-            throw ("token inválido")
+            throw TokenInvalido;
         }
 
         //verifica que el token sea válido
         jwt.verify(token, process.env.TOKEN_SECRET, (err, usuario) => {
             if (err) {
-                throw ("token invalido")
+                throw TokenInvalido;
             } else {
                 //envía los datos del usuario al request
                 req.usuario = usuario;
@@ -45,8 +46,7 @@ const auth = async(req, res, next) => {
             }
         });
     } catch (error) {
-        console.log(error);
-        res.send(error).status(400);        
+        devolverError(res, error);        
     }
 };
 

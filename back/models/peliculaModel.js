@@ -7,7 +7,6 @@ const qy = db.query;
 
 //buscar película por título
 async function buscarPelicula(searchParams){
-    console.log(searchParams);
     return await qy('SELECT * FROM `pelicula` WHERE ?', [searchParams]);
 }
 

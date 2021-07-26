@@ -4,6 +4,7 @@ const route = express.Router();
 
 //importar controlador
 const controller = require('./controllers/authController.js');
+const { devolverError } = require('./errorHandlers.js');
 
 route
 //registrar usuario
@@ -12,8 +13,7 @@ route
             const resp = await controller.registrarUsuario(req.body);
             res.send(resp).status(201);
         } catch (error) {
-            console.log(error);
-            res.send(error).status(400);            
+            devolverError(res, error);            
         }
     })
 //iniciar sesion
@@ -22,8 +22,7 @@ route
             const token = await controller.loguearUsuario(req.body);
             res.send({token}).status(200);
         } catch (error) {
-            console.log(error);
-            res.send(error).status(400);            
+            devolverError(res, error);             
         }
     })
 //cerrar sesion
@@ -37,8 +36,7 @@ route
             const resp = await controller.desloguearUsuario({token, expDate})
             res.send(resp).status(200);            
         } catch (error) {
-            console.log(error);
-            res.send(error).status(400);            
+            devolverError(res, error);             
         }
     })
 
