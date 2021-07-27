@@ -4,7 +4,7 @@ import Root from './Root'
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
-axios.defaults.baseUrl = process.env.BASE_URL || 'http://localhost:4000/';
+axios.defaults.baseURL = process.env.BASE_URL || 'http://localhost:4000/';
 axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
 
 render(<Root />, document.getElementById('root'));
