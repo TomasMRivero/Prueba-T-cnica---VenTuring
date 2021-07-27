@@ -1,7 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, TextField } from "@material-ui/core";
+import { useCallback, useState } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { autenticar } from "../../redux/actions/authActions";
 
-
+//estilos
 const useStyles = makeStyles((theme) => ({
     root : {
         margin: 'auto',
@@ -39,18 +43,79 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+//Componente de la pantalla de registro
 export default function RegistroScreen(){
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const [alias, setAlias] = useState('');
+    const onChangeAlias = useCallback((e) => {
+        setAlias(e.target.value);
+    });
+
+    const [pass, setPass] = useState('');
+    const onChangePass = useCallback((e) => {
+        setPass(e.target.value);
+    });
+
+    const [confirmar, setConfirmar] = useState('');
+    const onChangeConfirmar = useCallback((e) => {
+        setConfirmar(e.target.value);
+    });
+
+    //Inicia sesion automáticamente luego del registro
+    async function login() {
+        await axios.post('/api/auth/login', {
+            alias,
+            pass
+        }).then(response => {
+            localStorage.setItem('token', response.data.token);
+            axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+            dispatch(autenticar())
+        }).catch(error => {
+            console.error(error.response.data);
+        });
+    }
+
+    //Crea un nuevo usuario
+    async function registro() {
+        await axios.post('/api/auth/registro', {
+            alias,
+            pass
+        }).then((response) => {
+            console.log(response);
+            login()
+        }).catch(error => {
+            console.error(error.response.data);
+        });
+    }
+
+    //Funcion que se ejecuta al enviar el formulario.
+    //Verifica que las contraseñas ingresadas sean identicas
+    const onRegistro = useCallback((e) => {
+        e.preventDefault();
+        try{
+            if(pass !== confirmar){
+                throw {mensaje: "Las contraseñas no coinciden"}
+            }
+            registro();
+        }catch(error){
+            console.error(error)
+        }
+    }, [alias, pass, confirmar])
+
     return(
-        <form className={classes.root} label="login">
+        <form className={classes.root} onSubmit={onRegistro} label="login">
             <Grid className={classes.container} container spacing={5}>
-            
+                
                 <Grid item xs={12}>
                     <TextField
                         className={classes.input}
                         label="Nombre de usuario"
                         variant="outlined"
                         required
+                        value={alias}
+                        onChange={onChangeAlias}
                     />
                 </Grid>
 
@@ -61,6 +126,8 @@ export default function RegistroScreen(){
                         type="password"
                         variant="outlined"
                         required
+                        value={pass}
+                        onChange={onChangePass}
                     />
                 </Grid>
 
@@ -71,6 +138,8 @@ export default function RegistroScreen(){
                         type="password"
                         variant="outlined"
                         required
+                        value={confirmar}
+                        onChange = {onChangeConfirmar}
                     />
                 </Grid>
 

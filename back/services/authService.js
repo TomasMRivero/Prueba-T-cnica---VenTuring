@@ -14,7 +14,7 @@ async function verificarUsuario(user){
     const resp = await model.buscarUsuario({alias: user.alias.trim()});
     if (resp.length > 0){
         const mensaje = YaExiste.mensaje.concat(' el usuario');
-        throw {YaExiste, mensaje};
+        throw {...YaExiste, mensaje};
     }
     //encriptar clave
     const passEncriptada = await bcrypt.hash(user.pass, 10);
