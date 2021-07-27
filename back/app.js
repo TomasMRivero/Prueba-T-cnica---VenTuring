@@ -3,6 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const unless = require('express-unless');
 const jwt = require('jsonwebtoken');
+const cors = require('cors');
+
 
 //rutas
 const rutasPelicula = require('./rutasPelicula');
@@ -17,6 +19,7 @@ const PORT = process.env.PORT || 4000;
 
 
 app.use(express.json());
+app.use(cors());
 
 //middleware para autorizacion
 const auth = async(req, res, next) => {
