@@ -1,11 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, TextField } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import { autenticar } from "../../redux/actions/authActions";
 
-
+//estilos
 const useStyles = makeStyles((theme) => ({
     root : {
         margin: 'auto',
@@ -23,25 +23,27 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('xs')]: {
             width:'95%'
         },
-        border: '1px solid #f0f0f0',
+        border: '1px solid #544e68',
         borderRadius: 15,
     },
     input:{
-        width: '100%'
+        width: '100%',
+        borderColor: '#544e68'
     },
     button:{
         width: 'auto',
         padding: 15,
         transition: "1s ease",
         fontWeight: 'bold',
-        color: 'rgba(0, 0, 0, 0.74)',
-        background: '#6fa1ff',
+        color: '#0d2b45',
+        background: '#ffaa5e',
         '&:hover':{
-            background: '#a5c5ff',
+            background: '#ffd4a3',
         },
     },
 }))
 
+//Componente de la pantalla de login
 export default function LoginScreen(){
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -56,6 +58,8 @@ export default function LoginScreen(){
         setPass(e.target.value);
     })
 
+    //Hace el post en la base de datos y guarda el token en el localStorage.
+    //Cambia el estado de autenticado a true
     async function post() {
         await axios.post('/api/auth/login', {
             alias,
@@ -75,7 +79,7 @@ export default function LoginScreen(){
     }, [alias, pass])
 
     return(
-        <form className={classes.root} onSubmit={onLogin}>
+        <form className={classes.root} onSubmit={onLogin} label="login">
             <Grid className={classes.container} container spacing={5}>
             
                 <Grid item xs={12}>
