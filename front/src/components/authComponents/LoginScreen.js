@@ -1,9 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, Grid, Link, TextField, Typography } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import { autenticar } from "../../redux/actions/authActions";
+import { useHistory } from "react-router";
 
 //estilos
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 //Componente de la pantalla de login
 export default function LoginScreen(){
     const classes = useStyles();
+    const history = useHistory();
     const dispatch = useDispatch();
 
     const [alias, setAlias] = useState('');
@@ -73,10 +75,16 @@ export default function LoginScreen(){
         });
     }
 
+    //Funcion que se ejecuta al enviar el formulario
     const onLogin = useCallback((e) => {
         e.preventDefault();
         post()
     }, [alias, pass])
+
+    const onClickRegistro = useCallback((e) => {
+        e.preventDefault();
+        history.push('/registro');
+    })
 
     return(
         <form className={classes.root} onSubmit={onLogin} label="login">
@@ -107,6 +115,10 @@ export default function LoginScreen(){
 
                 <Grid item xs={12}>
                     <Button className = {classes.button} type="submit" variant="contained">Iniciar Sesión</Button>       
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Typography className={classes.newAcc} variant="p"><Link onClick={onClickRegistro}>Crear una nueva cuenta</Link></Typography>
                 </Grid>
 
             </Grid>  
