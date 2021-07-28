@@ -24,8 +24,9 @@ const upload = multer({
     fileFilter: (req, file, cb) => {
         
         //verificar que sea .csv
+        console.log(file)
 
-        if(file.mimetype == "text/csv"){
+        if(file.mimetype == "text/csv" || file.mimetype == 'application/vnd.ms-excel'){
             //formato correcto
             return cb(null, true);
         } else{ 
