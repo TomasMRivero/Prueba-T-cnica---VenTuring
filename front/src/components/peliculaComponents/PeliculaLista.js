@@ -106,6 +106,11 @@ export default function PeliculaLista(){
     const cerrarAlerta = () => {
         setAlerta(false);
     }
+    
+    //espera a que carguen los estados para evitar redirigir antes de verificar la autenticación
+    useEffect(() => {
+        setCargado(true);
+    });
 
     return(
         <div className={classes.root}>

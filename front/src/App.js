@@ -29,7 +29,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div className="App" style={{textAlign: 'center'}}>
       <Nav/>
       <Switch>
         <Route exact path="/login">
