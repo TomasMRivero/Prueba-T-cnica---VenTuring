@@ -5,6 +5,9 @@ import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { makeStyles } from "@material-ui/core/styles";
 import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+import { borrarPelicula } from "../../redux/actions";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
     container:{
@@ -26,9 +29,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PeliculaItem (props){
+    const dispatch = useDispatch();
     const classes = useStyles()
     const [expandir, setExpandir] = useState(false);
     const [editando, setEditando] = useState(false);
+
+    async function borrar(){
+        await axios.delete(`api/pelicula/${props.pelicula.id}`)
+        .then(() => {
+            dispatch(borrarPelicula(props.pelicula));
+        }).catch(error => {
+            console.error(error);
+            console.error(error.response);
+        })
+    }
 
     const onClickContainer = useCallback(() => {
         setExpandir(true);
@@ -46,7 +60,13 @@ export default function PeliculaItem (props){
     const onClickCancelar = useCallback((e) => {
         e.preventDefault();
         setEditando(false);
-    })
+    });
+
+    const onClickBorrar = useCallback((e) => {
+        e.preventDefault();
+        borrar();        
+    },[props.pelicula])
+
     return(
         <ClickAwayListener onClickAway={onClickAway}>
         <Grid container className={classes.container} onClick={onClickContainer}>
@@ -68,7 +88,7 @@ export default function PeliculaItem (props){
                     <CancelIcon/>
                 </IconButton>
                 </>}
-                <IconButton>
+                <IconButton onClick={onClickBorrar}>
                     <DeleteIcon/>
                 </IconButton>
             </Grid>}

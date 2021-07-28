@@ -58,7 +58,7 @@ export default function PeliculaLista({location}){
                 
                 batch(() => {
                     dispatch(getPeliculas(lista));
-                    dispatch(getPeliculaIDs(lista.map(i => i.id).reverse()));
+                    dispatch(getPeliculaIDs(lista.map(i => i.id)));
                 })
 
                 if (response[1].data.length === 0){

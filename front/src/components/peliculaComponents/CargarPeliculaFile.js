@@ -47,9 +47,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CargarPeliculaFile() {
     const classes=useStyles();
     const dispatch=useDispatch()
-
-    const [cargadas, setCargadas] = useState([]);
-    
+        
     const[archivo, setArchivo] = useState({});
     const[archivoSeleccionado, setArchivoSeleccionado] = useState(false);
 
@@ -109,7 +107,7 @@ export default function CargarPeliculaFile() {
                 <Grid item xs={12}>
 
                     <InputLabel id="lista">Cargar archivo .csv: </InputLabel> 
-                    <OutlinedInput className={classes.input} type="file" inputProps={{accept:"text/csv", enctype:"multipart/form-data"}} name="lista" onChange={onChangeFile}/>
+                    <OutlinedInput className={classes.input} type="file" inputProps={{accept:"text/csv", encType:"multipart/form-data"}} name="lista" onChange={onChangeFile}/>
                 
                 </Grid>
                 
@@ -127,9 +125,9 @@ export default function CargarPeliculaFile() {
                         )}
                     </ul>
                 </Grid>}
-                {cargadas.length>0 && <Grid item xs={12}>
+                {peliculas.length>0 && <Grid item xs={12}>
                     <Typography variant='h6' style={{textAlign:"left"}}>Cargadas:</Typography>
-                    {cargadas.map(p =>
+                    {peliculas.map(p =>
                         <PeliculaItem key={p.id} pelicula={p} />
                     )}
                 </Grid>}
