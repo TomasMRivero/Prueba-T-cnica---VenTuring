@@ -12,6 +12,7 @@ import PeliculaScreen from './components/peliculaComponents/PeliculaScreen';
 import ResultadoBusqueda from './components/peliculaComponents/ResultadoBusqueda';
 import PeliculaLista from './components/peliculaComponents/PeliculaLista';
 import CargarPeliculaForm from './components/peliculaComponents/CargarPeliculaForm';
+import CargarPeliculaFile from './components/peliculaComponents/CargarPeliculaFile';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
         <Route exact path="/pelicula" component={PeliculaLista}/>
         <Route exact path="/pelicula/buscar" component={ResultadoBusqueda}/>
         <Route exact path="/pelicula/form" component={CargarPeliculaForm}/>
+        <Route exact path="/pelicula/file" component={CargarPeliculaFile}/>
 
       </Switch>
     </div>
