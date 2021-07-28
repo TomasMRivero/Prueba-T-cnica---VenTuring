@@ -1,8 +1,9 @@
+import { tsFunctionType } from "@babel/types";
 import { Button, Grid, InputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     root : {
@@ -52,7 +53,25 @@ const useStyles = makeStyles((theme) => ({
 export default function PeliculaScreen(){
     const classes = useStyles();
     const autenticado = useSelector(state => state.autenticado);
-    const [cargado, setCargado] = useState(false)
+    const [cargado, setCargado] = useState(false);
+    const history = useHistory();
+
+    const [busqueda, setBusqueda] = useState('');
+    const onChangeBusqueda = useCallback((e) => {
+        setBusqueda(e.target.value);
+    });
+
+    const onBusqueda = useCallback((e) => {
+        e.preventDefault();
+        if(!busqueda){
+            return
+        }
+        const uri = busqueda.trim();
+        const req = encodeURIComponent(uri);
+
+        history.push(`/pelicula/buscar?titulo=${req}`);
+    }, [history, busqueda]);
+
     useEffect(() => {
         setCargado(true);
     });
@@ -64,12 +83,16 @@ export default function PeliculaScreen(){
                 <Grid item xs={12}>
                     <form
                         className={classes.buscar}
+                        onSubmit = {onBusqueda}
+                        label="buscar"
                     >
                         <InputBase
                             className={classes.input}
                             placeholder = "Buscar película: "
+                            onChange={onChangeBusqueda}
+                            value={busqueda}
                         />
-                        <Button className = {classes.button}>Buscar</Button>
+                        <Button type="submit" className = {classes.button}>Buscar</Button>
                     </form>     
                 </Grid>
                 <Grid item xs={12}>
