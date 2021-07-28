@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { autenticar } from './redux/actions/authActions';
 import Nav from './components/Nav';
+import PeliculaScreen from './components/peliculaComponents/PeliculaScreen';
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
       dispatch(autenticar());
     }
   }, [dispatch]);
-  
+  console.log(autenticado);
   return (
     <div className="App">
       <Nav/>
@@ -34,6 +35,8 @@ function App() {
         <Route exact path="/registro">
           {!autenticado?<RegistroScreen/>:<Redirect to="/"/>}
         </Route>
+        <Route exact path="/pelicula" component={PeliculaScreen}/>
+
       </Switch>
     </div>
   );
