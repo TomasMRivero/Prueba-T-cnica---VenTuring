@@ -118,7 +118,7 @@ export default function LoginScreen(){
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Typography className={classes.newAcc} variant="p"><Link onClick={onClickRegistro}>Crear una nueva cuenta</Link></Typography>
+                    <Typography className={classes.newAcc} variant="h6"><Link onClick={onClickRegistro}>Crear una nueva cuenta</Link></Typography>
                 </Grid>
 
             </Grid>  

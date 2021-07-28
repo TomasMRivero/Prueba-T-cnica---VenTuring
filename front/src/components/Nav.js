@@ -1,11 +1,13 @@
 import { AppBar, Button, IconButton, Toolbar, Typography } from "@material-ui/core";
 import HomeIcon from '@material-ui/icons/Home';
 import { makeStyles } from "@material-ui/core/styles"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import axios from "axios";
+import { desautenticar } from "../redux/actions/authActions";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
     },
@@ -22,12 +24,25 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
-
 export default function Nav(){
+    const dispatch = useDispatch();
     const classes = useStyles();
     const history = useHistory();
     const autenticado = useSelector(state => state.autenticado);
+
+    //Enviar el token a la lista negra y borrar del almacenamiento
+    //y cambiar el estado
+    async function logout(){
+        await axios.post('/api/auth/logout')
+        .then(response => {
+            console.log(response);
+            localStorage.removeItem('token', response.data.token);
+            axios.defaults.headers.common['authorization'] = null;
+            dispatch(desautenticar());
+        }).catch(error => {
+            console.error(error.response.data);
+        });
+    };
 
     const onClickHome = useCallback((e) => {
         e.preventDefault();
@@ -41,6 +56,7 @@ export default function Nav(){
 
     const onClickLogout = useCallback((e) => {
         e.preventDefault();
+        logout();
     });
 
     return(

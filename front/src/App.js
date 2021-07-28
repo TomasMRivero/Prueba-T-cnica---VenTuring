@@ -21,7 +21,6 @@ function App() {
   useEffect(() => {
     if(autorizacion !== null){
       dispatch(autenticar());
-      console.log(autenticado);
     }
   }, [dispatch]);
   
@@ -29,10 +28,10 @@ function App() {
     <div className="App">
       <Nav/>
       <Switch>
-        <Route path="/login">
+        <Route exact path="/login">
           {!autenticado?<LoginScreen/>:<Redirect to="/"/>}
         </Route>
-        <Route path="/registro">
+        <Route exact path="/registro">
           {!autenticado?<RegistroScreen/>:<Redirect to="/"/>}
         </Route>
       </Switch>
