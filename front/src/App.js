@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { autenticar } from './redux/actions/authActions';
+import Nav from './components/Nav';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
   
   return (
     <div className="App">
+      <Nav/>
       <Switch>
         <Route path="/login">
           {!autenticado?<LoginScreen/>:<Redirect to="/"/>}
