@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { autenticar } from './redux/actions/authActions';
 import Nav from './components/Nav';
 import PeliculaScreen from './components/peliculaComponents/PeliculaScreen';
+import ResultadoBusqueda from './components/peliculaComponents/ResultadoBusqueda';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
           {!autenticado?<RegistroScreen/>:<Redirect to="/"/>}
         </Route>
         <Route exact path="/pelicula" component={PeliculaScreen}/>
+        <Route exact path="/pelicula/buscar" component={ResultadoBusqueda}/>
 
       </Switch>
     </div>
