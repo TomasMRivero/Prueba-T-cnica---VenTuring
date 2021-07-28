@@ -2,7 +2,7 @@ import { Button, ClickAwayListener, Grid, Link, Snackbar, TextField, Typography 
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getPelicula } from "../../redux/actions";
 import PeliculaItem from "./PeliculaItem";
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     container:{
-        width: 'auto',
+        width: '90%',
         [theme.breakpoints.down('xs')]: {
             width:'95%'
         },
@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function CargarPeliculaForm(){
+    const history = useHistory();
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -91,7 +92,6 @@ export default function CargarPeliculaForm(){
         e.preventDefault();
         cargarPelicula();
     }, [titulo, descripcion, anio]);
-    console.log(pelicula);
 
     useEffect(() => {
         dispatch(getPelicula({}))
@@ -101,6 +101,11 @@ export default function CargarPeliculaForm(){
     const cerrarAlerta = () => {
         setAlerta(false);
     }
+
+    const onClickFile = useCallback((e) => {
+        e.preventDefault();
+        history.push('/pelicula/file');
+    })
 
     return(
         <form className={classes.root} label="libro" onSubmit={onSubmit}>
@@ -159,7 +164,7 @@ export default function CargarPeliculaForm(){
             </Grid>
 
             <Grid item xs={12}>
-                <Typography className={classes.newAcc} variant="h6"><Link >Cargar desde archivo</Link></Typography>
+                <Typography className={classes.newAcc} variant="h6"><Link onClick={onClickFile}>Cargar desde archivo</Link></Typography>
             </Grid>
             
             {pelicula.id &&

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     container:{
-        width: 'auto',
+        width: '90%',
         [theme.breakpoints.down('xs')]: {
             width:'95%'
         },

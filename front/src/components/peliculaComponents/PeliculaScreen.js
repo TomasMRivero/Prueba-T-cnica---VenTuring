@@ -1,10 +1,8 @@
-import { tsFunctionType } from "@babel/types";
-import { Button, Grid, InputBase } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router";
-import BuscarPelicula from "./BuscarPelicula";
 
 const useStyles = makeStyles((theme) => ({
     root : {

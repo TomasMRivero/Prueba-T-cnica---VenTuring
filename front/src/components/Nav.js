@@ -35,7 +35,6 @@ export default function Nav(){
     async function logout(){
         await axios.post('/api/auth/logout')
         .then(response => {
-            console.log(response);
             localStorage.removeItem('token', response.data.token);
             axios.defaults.headers.common['authorization'] = null;
             dispatch(desautenticar());
@@ -62,7 +61,7 @@ export default function Nav(){
     return(
         <div className={classes.root}>
         
-            <AppBar position="static" style={{background:"#ffaa5e"}}>
+            <AppBar position="fixed" style={{background:"#ffaa5e"}}>
                 <Toolbar>
                     <IconButton
                         edge="start"

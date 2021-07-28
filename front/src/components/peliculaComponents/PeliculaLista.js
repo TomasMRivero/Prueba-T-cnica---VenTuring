@@ -1,8 +1,7 @@
-import { Button, ClickAwayListener, Grid, IconButton, InputLabel, MenuItem, Select, Snackbar, Typography } from "@material-ui/core";
+import { Button, ClickAwayListener, Grid, MenuItem, Select, Snackbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
 import axios from "axios"
-import QueryString from "qs";
 import { useCallback, useEffect, useState } from "react"
 import { batch, useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router";
@@ -13,8 +12,9 @@ import PeliculaItem from "./PeliculaItem";
 const useStyles = makeStyles((theme) => ({
     root:{
         margin: 'auto',
+        marginTop: 64,
         width:' 100%',
-        height: '100vh',
+        maxeight: '100vh',
         border: 0,
         borderRadius: 3,
         flexWrap: 'wrap',
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     container:{
         margin: "auto",
-        width: 'auto',
+        width: '90%',
         padding: 15,
         [theme.breakpoints.down('xs')]: {
             width:'100%'
@@ -57,7 +57,6 @@ export default function PeliculaLista({location}){
         }
         Promise.all([getLista(), getSiguientePagina()])
             .then(response => {
-                console.log(response)
                 const lista = response[0].data.slice(0, limit);
                 
                 batch(() => {
@@ -83,8 +82,6 @@ export default function PeliculaLista({location}){
     useEffect(() => {
         fetch()
     }, [dispatch, limit, pagina])
-
-    console.log(peliculas);
 
     const onChangeLimit = useCallback((e) => {
         e.preventDefault()

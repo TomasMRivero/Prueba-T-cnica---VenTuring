@@ -1,10 +1,10 @@
-import { Button, ClickAwayListener, Grid, InputLabel, OutlinedInput, Snackbar, Typography } from "@material-ui/core"
+import { Button, ClickAwayListener, Grid, InputLabel, Link, OutlinedInput, Snackbar, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import { getPeliculaIDs, getPeliculas } from "../../redux/actions";
 import PeliculaItem from "./PeliculaItem";
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     container:{
-        width: 'auto',
+        width: '90%',
         [theme.breakpoints.down('xs')]: {
             width:'95%'
         },
@@ -46,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CargarPeliculaFile() {
+    const history=useHistory();
     const classes=useStyles();
     const dispatch=useDispatch()
 
@@ -71,8 +72,6 @@ export default function CargarPeliculaFile() {
     const onSubmit = useCallback((e) => {
         e.preventDefault();
 
-        console.log(archivo);
-
         const formData = new FormData();
 
         formData.append("lista", archivo);
@@ -80,7 +79,6 @@ export default function CargarPeliculaFile() {
         async function post(){
             await axios.post('api/pelicula/alta/csv', formData, {headers: { "Content-Type": "multipart/form-data" }})
             .then(response => {
-                console.log(response);
                 setExistentes(response.data.existentes);
                 batch(() => {
                     dispatch(getPeliculas(response.data.cargadas));
@@ -108,6 +106,11 @@ export default function CargarPeliculaFile() {
         setCargado(true);
     }, [dispatch])    
     
+    const onClickForm = useCallback((e) => {
+        e.preventDefault();
+        history.push('/pelicula/form');
+    })
+
     const cerrarAlerta = () => {
         setAlerta(false);
     }
@@ -139,6 +142,10 @@ export default function CargarPeliculaFile() {
                 <Grid item xs={12}>
                     <Button className = {classes.button} type="submit" variant="contained">Cargar Película</Button>       
                 </Grid>
+
+            <Grid item xs={12}>
+                <Typography className={classes.newAcc} variant="h6"><Link onClick={onClickForm}>Cargar desde formulario</Link></Typography>
+            </Grid>
 
                 {existentes.length > 0 && <Grid item xs={12}>
                     <Typography variant='h6' style={{textAlign:"left"}}>Existentes (no cargadas):</Typography>

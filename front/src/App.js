@@ -28,7 +28,6 @@ function App() {
       dispatch(autenticar());
     }
   }, [dispatch]);
-  console.log(autenticado);
   return (
     <div className="App">
       <Nav/>

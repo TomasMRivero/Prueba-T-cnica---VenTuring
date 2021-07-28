@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     container:{
-        width: 'auto',
+        width: '90%',
         [theme.breakpoints.down('xs')]: {
             width:'95%'
         },
@@ -90,7 +90,6 @@ export default function RegistroScreen(){
             alias,
             pass
         }).then((response) => {
-            console.log(response);
             login()
         }).catch(error => {
             if(error.response){
