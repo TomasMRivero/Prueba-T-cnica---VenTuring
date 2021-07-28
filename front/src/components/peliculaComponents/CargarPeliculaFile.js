@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 export default function CargarPeliculaFile() {
     const classes=useStyles();
     const dispatch=useDispatch()
-        
+
     const[archivo, setArchivo] = useState({});
     const[archivoSeleccionado, setArchivoSeleccionado] = useState(false);
 
@@ -119,7 +119,7 @@ export default function CargarPeliculaFile() {
                     <Typography variant='h6' style={{textAlign:"left"}}>Existentes (no cargadas):</Typography>
                     <ul>
                         {existentes.map(e => 
-                            <li>
+                            <li key={e.index}>
                                 <Typography variant='body1' style={{textAlign:"left"}}>{e}</Typography>
                             </li>    
                         )}

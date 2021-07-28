@@ -1,4 +1,4 @@
-import { ClickAwayListener, Grid, IconButton, Typography } from "@material-ui/core";
+import { ClickAwayListener, Grid, IconButton, TextField, Typography } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
@@ -25,7 +25,11 @@ const useStyles = makeStyles((theme) => ({
             border: '1px solid #544e68',
             cursor: 'pointer'
         }
-    }
+    },
+    input:{
+        width: '100%',
+        borderColor: '#544e68'
+    },
 }));
 
 export default function PeliculaItem (props){
@@ -49,7 +53,8 @@ export default function PeliculaItem (props){
     })
 
     const onClickAway = () => {
-        setExpandir(false)
+        setExpandir(false);
+        setEditando(false);
     }
 
     const onClickEditar = useCallback((e) => {
@@ -70,12 +75,38 @@ export default function PeliculaItem (props){
     return(
         <ClickAwayListener onClickAway={onClickAway}>
         <Grid container className={classes.container} onClick={onClickContainer}>
+            {!editando && <>
             <Grid item xs={12}>
                 <Typography style={{margin: 5}} variant="h6"> <b>{props.pelicula.titulo}</b> ({props.pelicula.anio})</Typography>
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="body1">{props.pelicula.descripcion}</Typography>
             </Grid>
+            </>}
+            {editando && <Grid item container xs={12} spacing={2}>
+                <Grid item xs={9}>
+                    <TextField
+                        className={classes.input}
+                        label="Titulo"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <TextField
+                        className={classes.input}
+                        label="Año"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        className={classes.input}
+                        label="Descripcion"
+                        variant="outlined"
+                        multiline
+                    />
+                </Grid>
+            </Grid>}
             {expandir && <Grid item xs={12}>
                 {!editando && <IconButton onClick={onClickEditar}>
                     <EditIcon/>
