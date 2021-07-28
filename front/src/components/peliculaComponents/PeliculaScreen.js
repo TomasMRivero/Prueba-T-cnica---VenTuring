@@ -50,7 +50,15 @@ export default function PeliculaScreen(){
 
     const onClickLista = useCallback((e) => {
         e.preventDefault();
-        history.push("/peliculas")
+        history.push("/pelicula")
+    })
+    const onClickFile = useCallback((e) => {
+        e.preventDefault();
+        history.push("/pelicula/file")
+    })
+    const onClickForm = useCallback((e) => {
+        e.preventDefault();
+        history.push("/pelicula/form")
     })
 
     return(
@@ -68,13 +76,15 @@ export default function PeliculaScreen(){
                     <Button
                         className = {classes.button}
                         style={{width:"100%"}}
-                    >Cargar por archivo</Button>
+                        onClick = {onClickFile}
+                    >Cargar desde archivo</Button>
                 </Grid>
                 <Grid item xs={12}>
                     <Button
                         className = {classes.button}
                         style={{width:"100%"}}
-                    >Cargar por formulario</Button>
+                        onClick = {onClickForm}
+                    >Cargar desde formulario</Button>
                 </Grid>
             </Grid>
         </div>

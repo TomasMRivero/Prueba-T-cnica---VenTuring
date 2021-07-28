@@ -86,8 +86,9 @@ export default function CargarPeliculaForm(){
     console.log(pelicula);
 
     useEffect(() => {
+        dispatch(getPelicula({}))
         setCargado(true);
-    })
+    }, [dispatch])
 
     return(
         <form className={classes.root} label="libro" onSubmit={onSubmit}>
