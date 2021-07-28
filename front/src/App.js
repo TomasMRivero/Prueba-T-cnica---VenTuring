@@ -11,6 +11,7 @@ import Nav from './components/Nav';
 import PeliculaScreen from './components/peliculaComponents/PeliculaScreen';
 import ResultadoBusqueda from './components/peliculaComponents/ResultadoBusqueda';
 import PeliculaLista from './components/peliculaComponents/PeliculaLista';
+import CargarPeliculaForm from './components/peliculaComponents/CargarPeliculaForm';
 
 function App() {
 
@@ -38,8 +39,9 @@ function App() {
           {!autenticado?<RegistroScreen/>:<Redirect to="/"/>}
         </Route>
         <Route exact path="/" component={PeliculaScreen}/>
+        <Route exact path="/pelicula" component={PeliculaLista}/>
         <Route exact path="/pelicula/buscar" component={ResultadoBusqueda}/>
-        <Route exact path="/peliculas" component={PeliculaLista}/>
+        <Route exact path="/pelicula/form" component={CargarPeliculaForm}/>
 
       </Switch>
     </div>
