@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PeliculaItem (props){
+    
     const classes = useStyles()
     return(
         <Grid container className={classes.container}>

@@ -65,9 +65,9 @@ export default function ResultadoBusqueda({location}){
     return(
         <div className={classes.root}>
 
-            <Grid container className={classes.container}>
+            <Grid container className={classes.container} spacing={5}>
 
-                <Grid item xs={12} spacing={5} style={{padding: 10}}>
+                <Grid item xs={12} style={{padding: 10}}>
                     <Typography variant="h6">Resultado de la búsqueda:</Typography>
                 </Grid>
                 {pelicula.id && <PeliculaItem pelicula={pelicula} />}
