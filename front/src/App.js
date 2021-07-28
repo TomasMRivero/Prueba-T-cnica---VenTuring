@@ -10,6 +10,7 @@ import { autenticar } from './redux/actions/authActions';
 import Nav from './components/Nav';
 import PeliculaScreen from './components/peliculaComponents/PeliculaScreen';
 import ResultadoBusqueda from './components/peliculaComponents/ResultadoBusqueda';
+import PeliculaLista from './components/peliculaComponents/PeliculaLista';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
         </Route>
         <Route exact path="/" component={PeliculaScreen}/>
         <Route exact path="/pelicula/buscar" component={ResultadoBusqueda}/>
+        <Route exact path="/peliculas" component={PeliculaLista}/>
 
       </Switch>
     </div>

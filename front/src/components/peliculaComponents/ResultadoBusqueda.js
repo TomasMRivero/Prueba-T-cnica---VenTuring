@@ -5,7 +5,6 @@ import QueryString from "qs";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPelicula } from "../../redux/actions";
-import { pelicula } from "../../redux/reducers/peliculaReducer";
 import PeliculaItem from "./PeliculaItem";
 
 const useStyles = makeStyles((theme) => ({
