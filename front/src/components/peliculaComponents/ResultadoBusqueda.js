@@ -4,6 +4,7 @@ import axios from "axios";
 import QueryString from "qs";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router";
 import { getPelicula } from "../../redux/actions";
 import PeliculaItem from "./PeliculaItem";
 
@@ -37,7 +38,8 @@ export default function ResultadoBusqueda({location}){
 
     const [cargado, setCargado] = useState(false);
 
-    const pelicula = useSelector(state => state.pelicula)
+    const pelicula = useSelector(state => state.pelicula);
+    const autenticado = useSelector(state => state.autenticado);
 
     async function buscar() {
         await axios.get(`api/pelicula/buscar?titulo=${busqueda.titulo}`)
@@ -64,6 +66,7 @@ export default function ResultadoBusqueda({location}){
 
     return(
         <div className={classes.root}>
+        {!autenticado && cargado && <Redirect to="/login"/>}
 
             <Grid container className={classes.container} spacing={5}>
 

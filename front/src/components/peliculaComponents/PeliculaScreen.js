@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PeliculaScreen(){
+    const history = useHistory();
     const classes = useStyles();
     const autenticado = useSelector(state => state.autenticado);
     const [cargado, setCargado] = useState(false);
@@ -47,17 +48,20 @@ export default function PeliculaScreen(){
         setCargado(true);
     });
 
+    const onClickLista = useCallback((e) => {
+        e.preventDefault();
+        history.push("/peliculas")
+    })
+
     return(
         <div className={classes.root}>
         {!autenticado && cargado && <Redirect to="/login"/>}
             <Grid className={classes.container} container spacing={5}>
                 <Grid item xs={12}>
-                    <BuscarPelicula /> 
-                </Grid>
-                <Grid item xs={12}>
                     <Button
                         className = {classes.button}
                         style={{width:"100%"}}
+                        onClick={onClickLista}
                     >Ver lista de películas</Button>
                 </Grid>
                 <Grid item xs={12}>

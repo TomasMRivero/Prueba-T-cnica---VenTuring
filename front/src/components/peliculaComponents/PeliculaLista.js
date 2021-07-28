@@ -4,6 +4,7 @@ import axios from "axios"
 import QueryString from "qs";
 import { useCallback, useEffect, useState } from "react"
 import { batch, useDispatch, useSelector } from "react-redux"
+import { Redirect } from "react-router";
 import { getPeliculaIDs, getPeliculas } from "../../redux/actions";
 import BuscarPelicula from "./BuscarPelicula";
 import PeliculaItem from "./PeliculaItem";
@@ -41,6 +42,7 @@ export default function PeliculaLista({location}){
 
     const peliculaIDs = useSelector(state => state.peliculaIDs);
     const peliculas = useSelector(state => peliculaIDs.map(id => state.peliculas[id]));
+    const autenticado = useSelector(state => state.autenticado);
 
     async function fetch(){
         async function getLista(){
@@ -95,6 +97,7 @@ export default function PeliculaLista({location}){
 
     return(
         <div className={classes.root}>
+            {!autenticado && cargado && <Redirect to="/login"/>}
             <Grid container className={classes.container} spacing={5}>
                 <Grid item xs={12}>
                     <BuscarPelicula/>
