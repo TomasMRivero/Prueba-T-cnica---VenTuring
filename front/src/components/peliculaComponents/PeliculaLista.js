@@ -1,5 +1,6 @@
-import { Button, Grid, IconButton, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
+import { Button, ClickAwayListener, Grid, IconButton, InputLabel, MenuItem, Select, Snackbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
 import axios from "axios"
 import QueryString from "qs";
 import { useCallback, useEffect, useState } from "react"
@@ -40,6 +41,9 @@ export default function PeliculaLista({location}){
     const [cargado, setCargado] = useState(false);
     const [ultimaPagina, setUltimaPagina] = useState(false);
 
+    const [alerta, setAlerta] = useState(false);
+    const [error, setError] = useState("");
+
     const peliculaIDs = useSelector(state => state.peliculaIDs);
     const peliculas = useSelector(state => peliculaIDs.map(id => state.peliculas[id]));
     const autenticado = useSelector(state => state.autenticado);
@@ -69,8 +73,10 @@ export default function PeliculaLista({location}){
                 setCargado(true)
 
             }).catch(error => {
-                console.error(error);
-                console.error(error.response);
+                if(error.response){
+                    setError(error.response.data);
+                }
+                setAlerta(true);
             });
     }
 
@@ -94,9 +100,25 @@ export default function PeliculaLista({location}){
         e.preventDefault();
         setPagina(pagina - 1);
     });
+    
+    const cerrarAlerta = () => {
+        setAlerta(false);
+    }
 
     return(
         <div className={classes.root}>
+            
+            <ClickAwayListener onClickAway={cerrarAlerta}>
+                <Snackbar
+                    anchorOrigin={{vertical:"top", horizontal:"center"}}
+                    open = {alerta}
+                    autoHideDuration={3000}
+                    onClose={cerrarAlerta}
+                >
+                    <Alert onClose={cerrarAlerta} severity="error" elevation={6}>{error}</Alert>
+                </Snackbar>
+            </ClickAwayListener>
+
             {!autenticado && cargado && <Redirect to="/login"/>}
             <Grid container className={classes.container} spacing={5}>
                 <Grid item xs={12}>

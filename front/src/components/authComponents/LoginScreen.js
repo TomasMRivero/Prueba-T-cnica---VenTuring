@@ -1,10 +1,11 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, Link, TextField, Typography } from "@material-ui/core";
+import { Button, ClickAwayListener, Grid, Link, Snackbar, TextField, Typography } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import { autenticar } from "../../redux/actions/authActions";
 import { useHistory } from "react-router";
+import { Alert } from "@material-ui/lab";
 
 //estilos
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +51,9 @@ export default function LoginScreen(){
     const history = useHistory();
     const dispatch = useDispatch();
 
+    const [alerta, setAlerta] = useState(false);
+    const [error, setError] = useState("");
+
     const [alias, setAlias] = useState('');
     const onChangeAlias = useCallback((e) => {
         setAlias(e.target.value);
@@ -71,7 +75,10 @@ export default function LoginScreen(){
             axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
             dispatch(autenticar())
         }).catch(error => {
-            console.error(error.response.data);
+            if(error.response){
+                setError(error.response.data);
+            }
+            setAlerta(true);
         });
     }
 
@@ -86,8 +93,24 @@ export default function LoginScreen(){
         history.push('/registro');
     })
 
+    const cerrarAlerta = () => {
+        setAlerta(false);
+    }
+
     return(
         <form className={classes.root} onSubmit={onLogin} label="login">
+            
+            <ClickAwayListener onClickAway={cerrarAlerta}>
+                <Snackbar
+                    anchorOrigin={{vertical:"top", horizontal:"center"}}
+                    open = {alerta}
+                    autoHideDuration={3000}
+                    onClose={cerrarAlerta}
+                >
+                    <Alert onClose={cerrarAlerta} severity="error" elevation={6}>{error}</Alert>
+                </Snackbar>
+            </ClickAwayListener>            
+
             <Grid className={classes.container} container spacing={5}>
             
                 <Grid item xs={12}>

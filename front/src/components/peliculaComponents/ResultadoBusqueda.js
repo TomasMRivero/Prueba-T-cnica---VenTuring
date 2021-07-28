@@ -1,5 +1,6 @@
-import { Grid, Typography } from "@material-ui/core";
+import { ClickAwayListener, Grid, Snackbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import QueryString from "qs";
 import { useEffect, useState } from "react";
@@ -35,6 +36,9 @@ export default function ResultadoBusqueda({location}){
     const classes = useStyles();
     const dispatch = useDispatch();
     const busqueda = QueryString.parse(location.search, {ignoreQueryPrefix: true, parameterLimit: 1});
+    
+    const [alerta, setAlerta] = useState(false);
+    const [error, setError] = useState("");
 
     const [cargado, setCargado] = useState(false);
 
@@ -56,17 +60,35 @@ export default function ResultadoBusqueda({location}){
             setCargado(true)
         })
         .catch(error => {
-            console.error(error.response.data);
+            if(error.response){
+                setError(error.response.data);
+            }
+            setAlerta(true);
         });
     }
 
     useEffect(() => {
         buscar()
     }, [location, dispatch]);
+    
+    const cerrarAlerta = () => {
+        setAlerta(false);
+    }
 
     return(
         <div className={classes.root}>
         {!autenticado && cargado && <Redirect to="/login"/>}
+            
+            <ClickAwayListener onClickAway={cerrarAlerta}>
+                <Snackbar
+                    anchorOrigin={{vertical:"top", horizontal:"center"}}
+                    open = {alerta}
+                    autoHideDuration={3000}
+                    onClose={cerrarAlerta}
+                >
+                    <Alert onClose={cerrarAlerta} severity="error" elevation={6}>{error}</Alert>
+                </Snackbar>
+            </ClickAwayListener>
 
             <Grid container className={classes.container} spacing={5}>
 

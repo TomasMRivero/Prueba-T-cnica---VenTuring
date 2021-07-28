@@ -1,4 +1,4 @@
-import { Button, Grid, Link, TextField, Typography } from "@material-ui/core";
+import { Button, ClickAwayListener, Grid, Link, Snackbar, TextField, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { Redirect } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getPelicula } from "../../redux/actions";
 import PeliculaItem from "./PeliculaItem";
+import { Alert } from "@material-ui/lab";
 
 //estilos
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +54,10 @@ export default function CargarPeliculaForm(){
     const onChangeTitulo = useCallback((e) => {
         setTitulo(e.target.value);
     });
+    
+    const [alerta, setAlerta] = useState(false);
+    const [error, setError] = useState("");
+
     const [descripcion, setDescripcion] = useState('');
     const onChangeDescripcion = useCallback((e) => {
         setDescripcion(e.target.value);
@@ -75,7 +80,10 @@ export default function CargarPeliculaForm(){
         }).then(response => {
             dispatch(getPelicula(response.data))
         }).catch(error => {
-            console.error(error.response.data)
+            if(error.response){
+                setError(error.response.data);
+            }
+            setAlerta(true);
         });
     }
 
@@ -90,8 +98,24 @@ export default function CargarPeliculaForm(){
         setCargado(true);
     }, [dispatch])
 
+    const cerrarAlerta = () => {
+        setAlerta(false);
+    }
+
     return(
         <form className={classes.root} label="libro" onSubmit={onSubmit}>
+
+            <ClickAwayListener onClickAway={cerrarAlerta}>
+                <Snackbar
+                    anchorOrigin={{vertical:"top", horizontal:"center"}}
+                    open = {alerta}
+                    autoHideDuration={3000}
+                    onClose={cerrarAlerta}
+                >
+                    <Alert onClose={cerrarAlerta} severity="error" elevation={6}>{error}</Alert>
+                </Snackbar>
+            </ClickAwayListener>
+
             {!autenticado && cargado && <Redirect to="/login"/>}
 
             <Grid className={classes.container} container spacing={5}>

@@ -1,9 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, ClickAwayListener, Grid, Snackbar, TextField } from "@material-ui/core";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { autenticar } from "../../redux/actions/authActions";
+import { Alert } from "@material-ui/lab";
 
 //estilos
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +49,9 @@ export default function RegistroScreen(){
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    const [alerta, setAlerta] = useState(false);
+    const [error, setError] = useState("");
+
     const [alias, setAlias] = useState('');
     const onChangeAlias = useCallback((e) => {
         setAlias(e.target.value);
@@ -73,7 +77,10 @@ export default function RegistroScreen(){
             axios.defaults.headers.common['authorization'] = localStorage.getItem('token');
             dispatch(autenticar())
         }).catch(error => {
-            console.error(error.response.data);
+                if(error.response){
+                    setError(error.response.data);
+                }
+                setAlerta(true);
         });
     }
 
@@ -86,7 +93,10 @@ export default function RegistroScreen(){
             console.log(response);
             login()
         }).catch(error => {
-            console.error(error.response.data);
+            if(error.response){
+                setError(error.response.data);
+            }
+            setAlerta(true);
         });
     }
 
@@ -100,12 +110,30 @@ export default function RegistroScreen(){
             }
             registro();
         }catch(error){
-            console.error(error)
+            setError(error.mensaje);
+            setAlerta(true);
         }
     }, [alias, pass, confirmar])
 
+    
+    const cerrarAlerta = () => {
+        setAlerta(false);
+    }
+
     return(
         <form className={classes.root} onSubmit={onRegistro} label="login">
+            
+            <ClickAwayListener onClickAway={cerrarAlerta}>
+                <Snackbar
+                    anchorOrigin={{vertical:"top", horizontal:"center"}}
+                    open = {alerta}
+                    autoHideDuration={3000}
+                    onClose={cerrarAlerta}
+                >
+                    <Alert onClose={cerrarAlerta} severity="error" elevation={6}>{error}</Alert>
+                </Snackbar>
+            </ClickAwayListener>
+
             <Grid className={classes.container} container spacing={5}>
                 
                 <Grid item xs={12}>

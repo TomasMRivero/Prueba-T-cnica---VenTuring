@@ -1,5 +1,6 @@
-import { Button, Grid, InputLabel, OutlinedInput, Typography } from "@material-ui/core"
+import { Button, ClickAwayListener, Grid, InputLabel, OutlinedInput, Snackbar, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
@@ -50,6 +51,9 @@ export default function CargarPeliculaFile() {
 
     const[archivo, setArchivo] = useState({});
     const[archivoSeleccionado, setArchivoSeleccionado] = useState(false);
+    
+    const [alerta, setAlerta] = useState(false);
+    const [error, setError] = useState("");
 
     const[existentes, setExistentes] = useState([]);
 
@@ -83,13 +87,18 @@ export default function CargarPeliculaFile() {
                     dispatch(getPeliculaIDs(response.data.cargadas.map(i => i.id).reverse()));
                 })
             }).catch(error => {
-                console.error(error);
-                console.error(error.response);
+                if(error.response){
+                    setError(error.response.data);
+                }
+                setAlerta(true);
             })
         }
 
         if(archivoSeleccionado){
             post();
+        }else{
+            setError("Tenés que subir un archivo .csv");
+            setAlerta(true);
         }
     }, [archivo, archivoSeleccionado]);
 
@@ -97,10 +106,26 @@ export default function CargarPeliculaFile() {
         dispatch(getPeliculas([]))
         dispatch(getPeliculaIDs([]))
         setCargado(true);
-    }, [dispatch])
+    }, [dispatch])    
+    
+    const cerrarAlerta = () => {
+        setAlerta(false);
+    }
 
     return(
         <form className={classes.root} onSubmit={onSubmit} enctype="multipart/form-data" >
+
+            <ClickAwayListener onClickAway={cerrarAlerta}>
+                <Snackbar
+                    anchorOrigin={{vertical:"top", horizontal:"center"}}
+                    open = {alerta}
+                    autoHideDuration={3000}
+                    onClose={cerrarAlerta}
+                >
+                    <Alert onClose={cerrarAlerta} severity="error" elevation={6}>{error}</Alert>
+                </Snackbar>
+            </ClickAwayListener>
+
         {!autenticado && cargado && <Redirect to="/login"/>}
             <Grid className={classes.container} container spacing={5}>
 

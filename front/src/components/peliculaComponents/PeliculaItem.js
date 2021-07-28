@@ -1,4 +1,4 @@
-import { ClickAwayListener, Grid, IconButton, TextField, Typography } from "@material-ui/core";
+import { ClickAwayListener, Grid, IconButton, Snackbar, TextField, Typography } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { borrarPelicula, editarPelicula } from "../../redux/actions";
 import axios from "axios";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
     container:{
@@ -38,6 +39,9 @@ export default function PeliculaItem (props){
     const [expandir, setExpandir] = useState(false);
     const [editando, setEditando] = useState(false);
 
+    const [alerta, setAlerta] = useState(false);
+    const [error, setError] = useState("");
+
     const [titulo, setTitulo] = useState(props.pelicula.titulo);
     const onChangeTitulo = useCallback((e) => {
         setTitulo(e.target.value)
@@ -56,8 +60,10 @@ export default function PeliculaItem (props){
         .then(() => {
             dispatch(borrarPelicula(props.pelicula));
         }).catch(error => {
-            console.error(error);
-            console.error(error.response);
+            if(error.response){
+                setError(error.response.data);
+            }
+            setAlerta(true);
         })
     }
 
@@ -69,8 +75,13 @@ export default function PeliculaItem (props){
         }).then(response => {
             dispatch(editarPelicula(response.data));
         }).catch(error => {
-            console.error(error);
-            console.error(error.response.data);
+            if(error.response){
+                setError(error.response.data);
+            }
+            setTitulo(props.pelicula.titulo);
+            setAnio(props.pelicula.anio);
+            setDescripcion(props.pelicula.descripcion);
+            setAlerta(true);
         });
     }
 
@@ -109,10 +120,27 @@ export default function PeliculaItem (props){
         editar();
         setExpandir(false);
         setEditando(false);
-    })
+    });
 
-    return(
+    const cerrarAlerta = () => {
+        setAlerta(false);
+    }
+
+    return(<>
+
+        <ClickAwayListener onClickAway={cerrarAlerta}>
+            <Snackbar
+                anchorOrigin={{vertical:"top", horizontal:"center"}}
+                open = {alerta}
+                autoHideDuration={3000}
+                onClose={cerrarAlerta}
+            >
+                <Alert onClose={cerrarAlerta} severity="error" elevation={6}>{error}</Alert>
+            </Snackbar>
+        </ClickAwayListener>
+
         <ClickAwayListener onClickAway={onClickAway}>
+
         <Grid container className={classes.container} onClick={onClickContainer}>
             {!editando && <>
             <Grid item xs={12}>
@@ -170,5 +198,5 @@ export default function PeliculaItem (props){
             </Grid>}
         </Grid>
         </ClickAwayListener>
-    )
+    </>)
 }
