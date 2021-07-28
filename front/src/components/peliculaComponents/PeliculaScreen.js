@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router";
+import BuscarPelicula from "./BuscarPelicula";
 
 const useStyles = makeStyles((theme) => ({
     root : {
@@ -25,19 +26,6 @@ const useStyles = makeStyles((theme) => ({
         border: '1px solid #544e68',
         borderRadius: 15,
     },
-    buscar:{
-        display: 'flex',
-    },
-    input:{
-        maxWidth: '90%',
-        flexGrow:1,
-        borderRadius: '10px 5px 5px 10px',
-        border: '1px solid #f0f0f0',
-        '&:hover':{
-            borderColor: '#544e68'
-        },
-        padding: 10
-    },
     button:{
         padding: 15,
         transition: "1s ease",
@@ -54,23 +42,6 @@ export default function PeliculaScreen(){
     const classes = useStyles();
     const autenticado = useSelector(state => state.autenticado);
     const [cargado, setCargado] = useState(false);
-    const history = useHistory();
-
-    const [busqueda, setBusqueda] = useState('');
-    const onChangeBusqueda = useCallback((e) => {
-        setBusqueda(e.target.value);
-    });
-
-    const onBusqueda = useCallback((e) => {
-        e.preventDefault();
-        if(!busqueda){
-            return
-        }
-        const uri = busqueda.trim();
-        const req = encodeURIComponent(uri);
-
-        history.push(`/pelicula/buscar?titulo=${req}`);
-    }, [history, busqueda]);
 
     useEffect(() => {
         setCargado(true);
@@ -81,19 +52,7 @@ export default function PeliculaScreen(){
         {!autenticado && cargado && <Redirect to="/login"/>}
             <Grid className={classes.container} container spacing={5}>
                 <Grid item xs={12}>
-                    <form
-                        className={classes.buscar}
-                        onSubmit = {onBusqueda}
-                        label="buscar"
-                    >
-                        <InputBase
-                            className={classes.input}
-                            placeholder = "Buscar película: "
-                            onChange={onChangeBusqueda}
-                            value={busqueda}
-                        />
-                        <Button type="submit" className = {classes.button}>Buscar</Button>
-                    </form>     
+                    <BuscarPelicula /> 
                 </Grid>
                 <Grid item xs={12}>
                     <Button

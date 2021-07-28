@@ -36,7 +36,7 @@ function App() {
         <Route exact path="/registro">
           {!autenticado?<RegistroScreen/>:<Redirect to="/"/>}
         </Route>
-        <Route exact path="/pelicula" component={PeliculaScreen}/>
+        <Route exact path="/" component={PeliculaScreen}/>
         <Route exact path="/pelicula/buscar" component={ResultadoBusqueda}/>
 
       </Switch>

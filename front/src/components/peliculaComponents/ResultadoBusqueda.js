@@ -6,29 +6,28 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPelicula } from "../../redux/actions";
 import { pelicula } from "../../redux/reducers/peliculaReducer";
+import PeliculaItem from "./PeliculaItem";
 
 const useStyles = makeStyles((theme) => ({
     root:{
         margin: 'auto',
-        paddingTop: 56,
-        [theme.breakpoints.up('sm')]: {
-            paddingTop: 64,
-        },
-    },
-    header:{
-        margin: 'auto',
-        padding: 20,
-    },
-    titulo:{
-        fontWeight: "bold",
-        [theme.breakpoints.down('xs')]: {
-            fontSize: 18,
-        },
+        width:' 100%',
+        height: '100vh',
+        border: 0,
+        borderRadius: 3,
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+        display: 'flex',
+        alignItems: 'center',
     },
     container:{
-        width: '100%',
-        border: '1px solid #f0f0f0',
-        borderRadius: 10
+        width: 'auto',
+        padding: 15,
+        [theme.breakpoints.down('xs')]: {
+            width:'95%'
+        },
+        border: '1px solid #544e68',
+        borderRadius: 15,
     }
 }));
 
@@ -69,23 +68,13 @@ export default function ResultadoBusqueda({location}){
 
             <Grid container className={classes.container}>
 
-                <Grid item xs={12}>
-                    <Typography>Resultados de la búsqueda</Typography>
+                <Grid item xs={12} spacing={5} style={{padding: 10}}>
+                    <Typography variant="h6">Resultado de la búsqueda:</Typography>
                 </Grid>
-                {pelicula.id &&<>
-                    <Grid item xs={12}>
-                        <Typography>{pelicula.titulo}</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography>{pelicula.descripcion}</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography>{pelicula.anio}</Typography>
-                    </Grid>
-                </>}
+                {pelicula.id && <PeliculaItem pelicula={pelicula} />}
                 {!pelicula.id && 
-                <Grid>
-                    <Typography>No se encontraron resultados para {busqueda.titulo}</Typography>
+                <Grid item xs={12}>
+                    <Typography style={{marginTop: 10}} variant="body1">No se encontraron resultados para "{busqueda.titulo}"</Typography>
                 </Grid>
                 }
 
