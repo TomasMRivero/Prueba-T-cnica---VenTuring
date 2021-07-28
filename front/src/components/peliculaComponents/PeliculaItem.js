@@ -6,7 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { makeStyles } from "@material-ui/core/styles";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { borrarPelicula } from "../../redux/actions";
+import { borrarPelicula, editarPelicula } from "../../redux/actions";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +38,19 @@ export default function PeliculaItem (props){
     const [expandir, setExpandir] = useState(false);
     const [editando, setEditando] = useState(false);
 
+    const [titulo, setTitulo] = useState(props.pelicula.titulo);
+    const onChangeTitulo = useCallback((e) => {
+        setTitulo(e.target.value)
+    })
+    const [anio, setAnio] = useState(props.pelicula.anio);
+    const onChangeAnio = useCallback((e) => {
+        setAnio(e.target.value)
+    })
+    const [descripcion, setDescripcion] = useState(props.pelicula.descripcion);
+    const onChangeDescripcion = useCallback((e) => {
+        setDescripcion(e.target.value)
+    })
+
     async function borrar(){
         await axios.delete(`api/pelicula/${props.pelicula.id}`)
         .then(() => {
@@ -48,11 +61,27 @@ export default function PeliculaItem (props){
         })
     }
 
+    async function editar(){
+        await axios.put(`api/pelicula/${props.pelicula.id}`,{
+            titulo,
+            descripcion,
+            anio
+        }).then(response => {
+            dispatch(editarPelicula(response.data));
+        }).catch(error => {
+            console.error(error);
+            console.error(error.response.data);
+        });
+    }
+
     const onClickContainer = useCallback(() => {
         setExpandir(true);
     })
 
     const onClickAway = () => {
+        setTitulo(props.pelicula.titulo);
+        setAnio(props.pelicula.anio);
+        setDescripcion(props.pelicula.descripcion);
         setExpandir(false);
         setEditando(false);
     }
@@ -64,6 +93,9 @@ export default function PeliculaItem (props){
 
     const onClickCancelar = useCallback((e) => {
         e.preventDefault();
+        setTitulo(props.pelicula.titulo);
+        setAnio(props.pelicula.anio);
+        setDescripcion(props.pelicula.descripcion);
         setEditando(false);
     });
 
@@ -71,6 +103,13 @@ export default function PeliculaItem (props){
         e.preventDefault();
         borrar();        
     },[props.pelicula])
+
+    const onClickGuardar = useCallback((e) => {
+        e.preventDefault();
+        editar();
+        setExpandir(false);
+        setEditando(false);
+    })
 
     return(
         <ClickAwayListener onClickAway={onClickAway}>
@@ -89,6 +128,8 @@ export default function PeliculaItem (props){
                         className={classes.input}
                         label="Titulo"
                         variant="outlined"
+                        value={titulo}
+                        onChange={onChangeTitulo}
                     />
                 </Grid>
                 <Grid item xs={3}>
@@ -96,6 +137,8 @@ export default function PeliculaItem (props){
                         className={classes.input}
                         label="Año"
                         variant="outlined"
+                        value={anio}
+                        onChange={onChangeAnio}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -104,6 +147,8 @@ export default function PeliculaItem (props){
                         label="Descripcion"
                         variant="outlined"
                         multiline
+                        value={descripcion}
+                        onChange={onChangeDescripcion}
                     />
                 </Grid>
             </Grid>}
@@ -112,7 +157,7 @@ export default function PeliculaItem (props){
                     <EditIcon/>
                 </IconButton>}
                 {editando && <>
-                <IconButton>
+                <IconButton onClick={onClickGuardar}>
                     <SaveIcon/>
                 </IconButton>
                 <IconButton onClick={onClickCancelar}>

@@ -99,7 +99,7 @@ async function borrarPelicula(id){
 //tomar la id de la ruta y los datos del body, verificar que estén en el
 //formato correcto y actualizar la película en la base de datos
 async function editarPelicula(reqParams){
-    const id = reqParams.id
+    const id = Number(reqParams.id)
     //verificar si existe la pelicula con esa id.
     //si existe, la guarda en una variable para tomar
     //los valores originales en caso de ser necesario
@@ -122,9 +122,13 @@ async function editarPelicula(reqParams){
     //tomar los valores originales
     //guardar los datos en un objeto setParams
     const setParams = {}
+
     setParams.titulo = ((!reqParams.titulo || !reqParams.titulo.trim())?buscar.titulo:reqParams.titulo.trim());
     setParams.descripcion = ((!reqParams.descripcion || !reqParams.descripcion.trim())?buscar.descripcion:reqParams.descripcion.trim());
-    setParams.anio = ((!reqParams.anio || !reqParams.anio.trim())?buscar.anio:Number(reqParams.anio));
+    setParams.anio = ((!reqParams.anio)?buscar.anio:Number(reqParams.anio));
+    
+
+    
 
     //mandar argumentos para editar
     const resp = await service.editarPelicula({id}, setParams)

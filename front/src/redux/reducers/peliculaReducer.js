@@ -1,5 +1,4 @@
-import { copy } from "superagent";
-import { GET_PELICULAS, GET_PELICULA, GET_PELICULA_IDS, BORRAR_PELICULA } from "../actions";
+import { GET_PELICULAS, GET_PELICULA, GET_PELICULA_IDS, BORRAR_PELICULA, EDITAR_PELICULA } from "../actions";
 
 export function pelicula(state = {}, action) {
     switch (action.type){
@@ -9,6 +8,10 @@ export function pelicula(state = {}, action) {
             };
         case BORRAR_PELICULA:
             return {state};
+        case EDITAR_PELICULA:
+            return{
+                ...action.payload
+            };
         default:
             return state
     }
@@ -31,6 +34,14 @@ export function peliculas(state = {}, action){
                 const cpy = {...state};
                 delete cpy[action.payload.id];
                 return cpy;
+            case EDITAR_PELICULA:
+                return{
+                    ...state,
+                    [action.payload.id]: {
+                        ...state[action.payload.id],
+                        ...action.payload
+                    }
+                };
             default:
                 return state;        
     }

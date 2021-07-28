@@ -3,6 +3,7 @@ export const GET_PELICULA_IDS = 'GET_PELICULAS_IDS'
 export const GET_PELICULA = 'GET_LISTA'
 
 export const BORRAR_PELICULA = 'BORRAR_PELICULA'
+export const EDITAR_PELICULA = 'EDITAR_PELICULA'
 
 export const getPelicula = pelicula => {
     return {
@@ -28,6 +29,13 @@ export const getPeliculaIDs = peliculaIDs => {
 export const borrarPelicula = pelicula => {
     return {
         type: BORRAR_PELICULA,
+        payload: pelicula
+    }
+}
+
+export const editarPelicula = pelicula => {
+    return {
+        type: EDITAR_PELICULA,
         payload: pelicula
     }
 }
