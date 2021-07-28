@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PeliculaLista({location}){
+export default function PeliculaLista(){
     const classes = useStyles();
     const dispatch = useDispatch()
 
@@ -48,6 +48,8 @@ export default function PeliculaLista({location}){
     const peliculas = useSelector(state => peliculaIDs.map(id => state.peliculas[id]));
     const autenticado = useSelector(state => state.autenticado);
 
+    //obtiene una lista de películas.
+    //verifica que la página siguiente no esté vacía para control de paginación
     async function fetch(){
         async function getLista(){
             return await axios.get(`api/pelicula?limit=${limit}&pagina=${pagina}`)
@@ -83,16 +85,19 @@ export default function PeliculaLista({location}){
         fetch()
     }, [dispatch, limit, pagina])
 
+    //cambiar la cantidad de resultados por página
     const onChangeLimit = useCallback((e) => {
         e.preventDefault()
         setLimit(e.target.value)
     })
 
+    //siguiente pagina
     const nextPage = useCallback((e) => {
         e.preventDefault();
         setPagina(pagina + 1);
     });
     
+    //anterior pagina
     const prevPage = useCallback((e) => {
         e.preventDefault();
         setPagina(pagina - 1);

@@ -2,7 +2,8 @@ import { Button, InputBase, makeStyles } from "@material-ui/core"
 import { useCallback, useState } from "react";
 import { useHistory } from "react-router";
 
-const useStyles = makeStyles((theme) => ({
+//estilos
+const useStyles = makeStyles(() => ({
     buscar:{
         display: 'flex',
     },
@@ -37,6 +38,8 @@ export default function BuscarPelicula(){
         setBusqueda(e.target.value);
     });
 
+    //permite el uso de caracteres reservados como &
+    //redirige a la pantalla de resultados de búsqueda
     const onBusqueda = useCallback((e) => {
         e.preventDefault();
         if(!busqueda){

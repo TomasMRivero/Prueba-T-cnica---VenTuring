@@ -73,6 +73,8 @@ export default function CargarPeliculaForm(){
     const pelicula = useSelector(state => state.pelicula);
     const autenticado = useSelector(state => state.autenticado);
 
+    //toma los estados de titulos, descripcion y año y los manda en el request
+    //devuelve una película y la guarda en el store
     async function cargarPelicula(){
         await axios.post('api/pelicula/alta', {
             titulo,
@@ -88,11 +90,13 @@ export default function CargarPeliculaForm(){
         });
     }
 
+    //función que llama a cargar película al enviar el formulario
     const onSubmit = useCallback((e) => {
         e.preventDefault();
         cargarPelicula();
     }, [titulo, descripcion, anio]);
 
+    //limpia el store de película antes del render
     useEffect(() => {
         dispatch(getPelicula({}))
         setCargado(true);
@@ -102,6 +106,7 @@ export default function CargarPeliculaForm(){
         setAlerta(false);
     }
 
+    //redirige a carga por archivo
     const onClickFile = useCallback((e) => {
         e.preventDefault();
         history.push('/pelicula/file');

@@ -1,5 +1,3 @@
-import './App.css';
-
 import { Switch, Route, Redirect } from 'react-router-dom'
 import LoginScreen from './components/authComponents/LoginScreen';
 import RegistroScreen from './components/authComponents/RegistroScreen';
@@ -8,6 +6,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { autenticar } from './redux/actions/authActions';
 import Nav from './components/Nav';
+
 import PeliculaScreen from './components/peliculaComponents/PeliculaScreen';
 import ResultadoBusqueda from './components/peliculaComponents/ResultadoBusqueda';
 import PeliculaLista from './components/peliculaComponents/PeliculaLista';
@@ -28,6 +27,7 @@ function App() {
       dispatch(autenticar());
     }
   }, [dispatch]);
+
   return (
     <div className="App">
       <Nav/>

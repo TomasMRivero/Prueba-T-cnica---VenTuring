@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, useHistory } from "react-router";
-
+ 
+//estilos
 const useStyles = makeStyles((theme) => ({
     root : {
         margin: 'auto',
@@ -42,22 +43,28 @@ export default function PeliculaScreen(){
     const autenticado = useSelector(state => state.autenticado);
     const [cargado, setCargado] = useState(false);
 
+    //espera a que carguen los estados para evitar redirigir antes de verificar la autenticación
     useEffect(() => {
         setCargado(true);
     });
 
+    //redirige a la lista
     const onClickLista = useCallback((e) => {
         e.preventDefault();
         history.push("/pelicula")
-    })
+    });
+
+    //redirige a la carga por archivo
     const onClickFile = useCallback((e) => {
         e.preventDefault();
         history.push("/pelicula/file")
-    })
+    });
+
+    //redirige a la carga por formulario
     const onClickForm = useCallback((e) => {
         e.preventDefault();
         history.push("/pelicula/form")
-    })
+    });
 
     return(
         <div className={classes.root}>

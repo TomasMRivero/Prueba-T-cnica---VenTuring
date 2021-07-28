@@ -7,6 +7,7 @@ import { useCallback, useEffect } from "react";
 import axios from "axios";
 import { desautenticar } from "../redux/actions/authActions";
 
+//estilos
 const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
@@ -43,16 +44,19 @@ export default function Nav(){
         });
     };
 
+    //redirige a la pantalla de inicio
     const onClickHome = useCallback((e) => {
         e.preventDefault();
         history.push("/");
     });
 
+    //redirige a la pantalla de inicio de sesión
     const onClickLogin = useCallback((e) => {
         e.preventDefault();
         history.push("/login");
     });
 
+    //llama a la función logout
     const onClickLogout = useCallback((e) => {
         e.preventDefault();
         logout();

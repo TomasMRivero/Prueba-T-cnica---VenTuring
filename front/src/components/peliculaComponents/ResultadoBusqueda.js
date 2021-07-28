@@ -9,6 +9,7 @@ import { Redirect } from "react-router";
 import { getPelicula } from "../../redux/actions";
 import PeliculaItem from "./PeliculaItem";
 
+//estilos
 const useStyles = makeStyles((theme) => ({
     root:{
         margin: 'auto',
@@ -45,6 +46,8 @@ export default function ResultadoBusqueda({location}){
     const pelicula = useSelector(state => state.pelicula);
     const autenticado = useSelector(state => state.autenticado);
 
+    //toma como parametro el query de la url y lo manda en el body del request.
+    //devuelve un elemento. si no tiene un valor "id", reconoce que la búsqueda no tuvo resultados
     async function buscar() {
         await axios.get(`api/pelicula/buscar?titulo=${busqueda.titulo}`)
         .then(response => {
@@ -67,6 +70,7 @@ export default function ResultadoBusqueda({location}){
         });
     }
 
+    //ejecuta la funcón buscar si cambia la url
     useEffect(() => {
         buscar()
     }, [location, dispatch]);

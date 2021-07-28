@@ -8,6 +8,7 @@ import { Redirect, useHistory } from "react-router";
 import { getPeliculaIDs, getPeliculas } from "../../redux/actions";
 import PeliculaItem from "./PeliculaItem";
 
+//estilos
 const useStyles = makeStyles((theme) => ({
     root : {
         margin: 'auto',
@@ -64,11 +65,15 @@ export default function CargarPeliculaFile() {
     const peliculas = useSelector(state => peliculaIDs.map(id => state.peliculas[id]));
     const autenticado = useSelector(state => state.autenticado);
 
+    //guarda el archivo en un estado
     const onChangeFile = useCallback((e) => {
         setArchivo(e.target.files[0]);
         setArchivoSeleccionado(true);
     })
 
+    //verifica que haya un archivo cargado y envia el formulario
+    //pasa el archivo en el body. Guarda la lista de peliculas ya existentes en un estado
+    //y la lista de peliculas cargadas en el store
     const onSubmit = useCallback((e) => {
         e.preventDefault();
 
@@ -100,12 +105,15 @@ export default function CargarPeliculaFile() {
         }
     }, [archivo, archivoSeleccionado]);
 
+
+    //vacía los estados de peliculas guardados en el store
     useEffect(() => {
         dispatch(getPeliculas([]))
         dispatch(getPeliculaIDs([]))
         setCargado(true);
     }, [dispatch])    
     
+    //redirige a la pantalla de carga por formulario
     const onClickForm = useCallback((e) => {
         e.preventDefault();
         history.push('/pelicula/form');

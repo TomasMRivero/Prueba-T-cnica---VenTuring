@@ -10,6 +10,7 @@ import { borrarPelicula, editarPelicula } from "../../redux/actions";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
 
+//estilos
 const useStyles = makeStyles((theme) => ({
     container:{
         transition: "0.3s ease",
@@ -55,6 +56,7 @@ export default function PeliculaItem (props){
         setDescripcion(e.target.value)
     })
 
+    //toma la id y envía el request para borrar la película seleccionada
     async function borrar(){
         await axios.delete(`api/pelicula/${props.pelicula.id}`)
         .then(() => {
@@ -67,6 +69,9 @@ export default function PeliculaItem (props){
         })
     }
 
+    //toma como parametros los estados de titulo descripcion y año y los envía en el body del request
+    //para editarlos. Si la operación es exitosa modifica el store con los nuevos valores.
+    //si devuelve error, vuelve a poner los valores originales en los estados.
     async function editar(){
         await axios.put(`api/pelicula/${props.pelicula.id}`,{
             titulo,
@@ -85,10 +90,12 @@ export default function PeliculaItem (props){
         });
     }
 
+    //selecciona un item
     const onClickContainer = useCallback(() => {
         setExpandir(true);
     })
 
+    //desseleccionar un item
     const onClickAway = () => {
         setTitulo(props.pelicula.titulo);
         setAnio(props.pelicula.anio);
@@ -97,11 +104,13 @@ export default function PeliculaItem (props){
         setEditando(false);
     }
 
+    //cambia el texto por inputs
     const onClickEditar = useCallback((e) => {
         e.preventDefault();
         setEditando(true);
     });
 
+    //cancela la edición y vuelve a guardar los valores originales en los estados
     const onClickCancelar = useCallback((e) => {
         e.preventDefault();
         setTitulo(props.pelicula.titulo);
@@ -110,11 +119,13 @@ export default function PeliculaItem (props){
         setEditando(false);
     });
 
+    //borrar la película seleccionada
     const onClickBorrar = useCallback((e) => {
         e.preventDefault();
         borrar();        
     },[props.pelicula])
 
+    //guardar los datos editados
     const onClickGuardar = useCallback((e) => {
         e.preventDefault();
         editar();
